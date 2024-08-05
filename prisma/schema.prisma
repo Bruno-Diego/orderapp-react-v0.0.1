@@ -69,7 +69,7 @@ model Category {
   title     String
   desc      String
   color     String
-  img       String
+  img       String?
   slug      String    @unique
   products  Product[]
 }
