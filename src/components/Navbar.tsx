@@ -1,10 +1,11 @@
 import React from "react";
+import { FiPhone } from "react-icons/fi";
 // import Menu from "./Menu";
 import Link from "next/link";
 // import CartIcon from "./CartIcon";
 import Image from "next/image";
 // import UserLinks from "./UserLinks";
-// import Logo from "./Logo";
+import Logo from "./Logo";
 import { checkUser } from "@/lib/checkUser";
 
 import {
@@ -26,14 +27,14 @@ const Navbar = async () => {
       </div>
       {/* LOGO */}
       <div className="text-xl md:font-bold flex-1 md:text-center">
-        {/* <Link href="/"><Logo /></Link> */}
+        <Link href="/"><Logo /></Link>
       </div>
       {/* MOBILE MENU */}
       <div className="md:hidden">
         {/* <Menu /> */}
       </div>
       {/* RIGHT LINKS */}
-      <div>
+      <div className="md:absolute top-3 r-2 lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
         <SignedOut>
           <SignInButton />
         </SignedOut>
@@ -42,9 +43,9 @@ const Navbar = async () => {
         </SignedIn>
       </div>
       <div className="hidden md:flex gap-4 items-center justify-end flex-1">
-        <div className="md:absolute top-3 r-2 lg:static flex items-center gap-2 cursor-pointer bg-orange-300 px-1 rounded-md">
-          <Image src="/phone.png" alt="" width={20} height={20} />
-          <span>123 456 78</span>
+        <div className="md:absolute top-3 r-2 lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
+          <FiPhone />
+          <span>324 056 0356</span>
         </div>
         {/* <UserLinks/>
         <CartIcon /> */}
