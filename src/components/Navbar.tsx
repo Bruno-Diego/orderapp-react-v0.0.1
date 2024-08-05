@@ -6,6 +6,14 @@ import Image from "next/image";
 // import UserLinks from "./UserLinks";
 // import Logo from "./Logo";
 
+import {
+    ClerkProvider,
+    SignInButton,
+    SignedIn,
+    SignedOut,
+    UserButton
+  } from '@clerk/nextjs'
+
 const Navbar = () => {
   const user = false;
   return (
@@ -18,11 +26,11 @@ const Navbar = () => {
       </div>
       {/* LOGO */}
       <div className="text-xl md:font-bold flex-1 md:text-center">
-        <Link href="/"><Logo /></Link>
+        {/* <Link href="/"><Logo /></Link> */}
       </div>
       {/* MOBILE MENU */}
       <div className="md:hidden">
-        <Menu />
+        {/* <Menu /> */}
       </div>
       {/* RIGHT LINKS */}
       <div className="hidden md:flex gap-4 items-center justify-end flex-1">
@@ -30,8 +38,8 @@ const Navbar = () => {
           <Image src="/phone.png" alt="" width={20} height={20} />
           <span>123 456 78</span>
         </div>
-        <UserLinks/>
-        <CartIcon />
+        {/* <UserLinks/>
+        <CartIcon /> */}
       </div>
     </div>
   );
