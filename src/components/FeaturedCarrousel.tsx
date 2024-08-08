@@ -17,7 +17,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const CarouselComponent = () => {
+const FeaturedCarouselComponent = () => {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
@@ -61,4 +61,4 @@ const CarouselComponent = () => {
   );
 };
 
-export default CarouselComponent;
+export default FeaturedCarouselComponent;
