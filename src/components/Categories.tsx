@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from 'react'
 
 interface Category {
@@ -15,7 +17,9 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch('/api/categories')
+      console.log("response:" + response)
       const data = await response.json()
+      console.log("data:" + data)
       setCategories(data)
     }
 
@@ -23,7 +27,7 @@ const Categories = () => {
   }, [])
 
   return (
-    <div>
+    <div className='text-white'>
       <h1>Categories</h1>
       <ul>
         {categories.map((category) => (
