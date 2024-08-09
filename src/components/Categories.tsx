@@ -34,20 +34,22 @@ const Categories = () => {
   }, [])
 
   return (
-    <div className='text-white w-full'>
-      <h1>Categories</h1>
-      <Card className="w-1/2 bg-[url('https://res.cloudinary.com/dd8ske4ub/image/upload/v1723195766/m3_cgjwqu.png')] bg-cover bg-no-repeat bg-center">
-        <CardHeader className="w-2/3 text-white">
-          <CardTitle>Pizze</CardTitle>
-          <CardDescription className="text-white">Autentiche Pizze Italiane! Scopri la nostra vasta gamma di pizze, realizzate con ingredienti di prima qualità e cotte alla perfezione. Dalla classica Margherita alla più avventurosa Zola e Mela, c`è una pizza per ogni palato. Goditi i ricchi sapori e le croste croccanti che rendono le nostre pizze irresistibili.</CardDescription>
-        </CardHeader>
-      </Card>
-      <ul>
+    <div className='w-full my-4 md:flex md:flex-wrap'>
+      
         {categories.map((category) => (
-          <li key={category.id}>{category.title}</li>
+          <div key={category.id} className='w-full my-4 lg:w-1/2 lg:px-4'>
+            <Card 
+            className={`w-full lg:min-h-full bg-white bg-cover bg-no-repeat bg-center`}
+            style={{ backgroundImage: `url(${category.img})` }}
+            >
+              <CardHeader className={`text-${category.color} w-1/2`}>
+                <CardTitle>{category.title}</CardTitle>
+                <CardDescription className={`text-${category.color}`}>{category.desc}</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
 
         ))}
-      </ul>
     </div>
   )
 }
