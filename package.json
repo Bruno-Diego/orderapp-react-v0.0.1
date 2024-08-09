@@ -19,6 +19,7 @@
     "embla-carousel-react": "^8.1.8",
     "lucide-react": "^0.425.0",
     "next": "14.2.5",
+    "next-cloudinary": "^6.10.0",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",

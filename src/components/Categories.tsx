@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from 'react'
 
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
 interface Category {
   id: number
   title: string
@@ -13,7 +20,7 @@ interface Category {
 
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([])
-
+  
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch('/api/categories')
@@ -27,11 +34,18 @@ const Categories = () => {
   }, [])
 
   return (
-    <div className='text-white'>
+    <div className='text-white w-full'>
       <h1>Categories</h1>
+      <Card className="w-1/2 bg-[url('https://res.cloudinary.com/dd8ske4ub/image/upload/v1723195766/m3_cgjwqu.png')] bg-cover bg-no-repeat bg-center">
+        <CardHeader className="w-2/3 text-white">
+          <CardTitle>Pizze</CardTitle>
+          <CardDescription className="text-white">Autentiche Pizze Italiane! Scopri la nostra vasta gamma di pizze, realizzate con ingredienti di prima qualità e cotte alla perfezione. Dalla classica Margherita alla più avventurosa Zola e Mela, c`è una pizza per ogni palato. Goditi i ricchi sapori e le croste croccanti che rendono le nostre pizze irresistibili.</CardDescription>
+        </CardHeader>
+      </Card>
       <ul>
         {categories.map((category) => (
           <li key={category.id}>{category.title}</li>
+
         ))}
       </ul>
     </div>

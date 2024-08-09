@@ -21,3 +21,11 @@ $ npx prisma init
 - Create the prisma schemas
 $ npx prisma generate
 $ npx prisma migrate dev
+
+
+..::Cloudinary config::..
+$ npm i next-cloudinary
+$ npx prisma init
+- Create the prisma schemas
+$ npx prisma generate
+$ npx prisma migrate dev
