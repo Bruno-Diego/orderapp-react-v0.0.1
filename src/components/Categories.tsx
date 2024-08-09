@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import Link from 'next/link'
 
 interface Category {
   id: number
@@ -38,15 +39,17 @@ const Categories = () => {
       
         {categories.map((category) => (
           <div key={category.id} className='w-full my-4 lg:w-1/2 lg:px-4'>
-            <Card 
-            className={`w-full lg:min-h-full bg-white bg-cover bg-no-repeat bg-center`}
-            style={{ backgroundImage: `url(${category.img})` }}
-            >
-              <CardHeader className={`text-${category.color} w-1/2`}>
-                <CardTitle>{category.title}</CardTitle>
-                <CardDescription className={`text-${category.color}`}>{category.desc}</CardDescription>
-              </CardHeader>
-            </Card>
+            <Link href={`/menu/${category.slug}`}>
+              <Card 
+              className={`w-full lg:min-h-full bg-white bg-cover bg-no-repeat bg-center`}
+              style={{ backgroundImage: `url(${category.img})` }}
+              >
+                <CardHeader className={`text-${category.color} w-1/2`}>
+                  <CardTitle>{category.title}</CardTitle>
+                  <CardDescription className={`text-${category.color}`}>{category.desc}</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
           </div>
 
         ))}
