@@ -36,21 +36,9 @@ const MenuPage = () => {
     fetchProducts();
   }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="w-full my-4 md:flex md:flex-wrap">
-        <h1 className="text-white">List of products:</h1>
-        {products.map((product) => (
-          <Link
-          href={`/product/${product.id}`}
-          key={product.id}
-          className="w-full h-1/3 bg-cover p-8 md:h-1/2"
-          style={{ backgroundImage: `url(${product.img})` }}
-          >
-            <h1 className="text-white" key={product.id}>
-              {product.title}
-            </h1>
-          </Link>
-        ))}
+    <main className="min-h-screen flex-col items-center justify-between p-24">
+      <h1 className="text-white">List of products:</h1>
+      <div className="w-full flex-wrap md:flex md:flex-nowrap">
         <ItemCard />
       </div>
     </main>
