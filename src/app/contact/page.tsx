@@ -24,16 +24,16 @@ const ContactPage = () => {
           <div className="mt-4">
             <h3 className="text-xl font-bold mb-2">Orario di Apertura:</h3>
             <ul className="list-disc pl-5">
-              <li>Lunedì: 11:00 – 00:00</li>
-              <li>Martedì: 11:00 – 00:00</li>
-              <li>Mercoledì: 11:00 – 00:00</li>
-              <li>Giovedì (Assunzione di Maria Vergine): 11:00 – 00:00</li>
-              <li>Venerdì: 11:00 – 05:00</li>
-              <li>Sabato: 11:00 – 01:00</li>
-              <li>Domenica: 11:00 – 00:00</li>
+              <li>Lunedì: 11:00 - 00:00</li>
+              <li>Martedì: 11:00 - 00:00</li>
+              <li>Mercoledì: 11:00 - 00:00</li>
+              <li>Giovedì (Assunzione di Maria Vergine): 11:00 - 00:00</li>
+              <li>Venerdì: 11:00 - 05:00</li>
+              <li>Sabato: 11:00 - 01:00</li>
+              <li>Domenica: 11:00 - 00:00</li>
             </ul>
             <p className="text-sm text-gray-500 mt-2">
-              L'orario di apertura può variare durante le festività.
+              L&lsquo;orario di apertura può variare durante le festività.
             </p>
           </div>
         </div>
@@ -61,12 +61,12 @@ const ContactPage = () => {
           <div className="space-y-4">
             {/* Testimoni 1 */}
             <div className="p-4 bg-gray-950 rounded-lg">
-              <p className="text-lg">"La miglior pizza che abbia mai mangiato! Il servizio è impeccabile e l'atmosfera è fantastica."</p>
+              <p className="text-lg">&ldquo;La miglior pizza che abbia mai mangiato! Il servizio è impeccabile e l&lsquo;atmosfera è fantastica.&ldquo;</p>
               <p className="text-right text-sm text-gray-600">- Mario Rossi</p>
             </div>
             {/* Testimoni 2 */}
             <div className="p-4 bg-gray-950 rounded-lg">
-              <p className="text-lg">"Ottimo cibo e personale cordiale. Tornerò sicuramente!"</p>
+              <p className="text-lg">&ldquo;Ottimo cibo e personale cordiale. Tornerò sicuramente!&ldquo;</p>
               <p className="text-right text-sm text-gray-600">- Laura Bianchi</p>
             </div>
             {/* Aggiunge piu se necessario */}
