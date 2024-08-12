@@ -45,7 +45,7 @@ const Navbar = async () => {
       <div className="hidden md:flex gap-4 items-center justify-end flex-1">
         <div className="md:absolute top-3 r-2 lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
           <FiPhone />
-          <span>324 056 0356</span>
+          <a href="tel:+393240560356" className="">324 056 0356</a>
         </div>
         {/* <UserLinks/>
         <CartIcon /> */}
