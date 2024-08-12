@@ -1,6 +1,10 @@
 import React from "react";
 import { useState } from "react";
 
+import { BsPlusLg } from "react-icons/bs";
+import { BsDashLg } from "react-icons/bs";
+import { Button } from "@/components/ui/button"
+
 import {
   Card,
   CardContent,
@@ -14,7 +18,7 @@ import Image from "next/image";
 const ItemCard = () => {
   const pizzaImg =
     "https://res.cloudinary.com/dd8ske4ub/image/upload/v1723456009/p12_hvaqn2.png";
-  const [quantity, setQuantity] = useState(4);
+  const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -46,37 +50,27 @@ const ItemCard = () => {
             </CardDescription>
           </div>
           <div className="">
-            <p className="text-xl font-bold mb-2">$5.99</p>
+            <p className="text-xl font-bold mb-2">€5.99</p>
           </div>
         </div>
       </CardHeader>
       <CardContent>
         <div className="text-right">
-          <div className="flex items-center justify-end space-x-2">
-            {/* <IconButton
-              icon={<MinusIcon />}
-              onClick={decreaseQuantity}
-              size="sm"
-              colorScheme="blackAlpha"
-              variant="outline"
-              aria-label="Decrease quantity"
-            /> */}
+          <div className="flex items-center space-x-2">
+            <Button 
+            size="icon"
+            onClick={decreaseQuantity}
+            >
+              <BsDashLg className="h-4 w-4" />
+            </Button>
             <span className="text-lg">{quantity}</span>
-            {/* <IconButton
-              icon={<AddIcon />}
-              onClick={increaseQuantity}
-              size="sm"
-              colorScheme="blackAlpha"
-              variant="outline"
-              aria-label="Increase quantity"
-            />
-            <IconButton
-              icon={<DeleteIcon />}
-              size="sm"
-              colorScheme="red"
-              variant="outline"
-              aria-label="Delete item"
-            /> */}
+            <Button 
+            size="icon"
+            onClick={increaseQuantity}
+            >
+              <BsPlusLg className="h-4 w-4" />
+            </Button>
+            <Button variant="destructive">Delete Product</Button>
           </div>
         </div>
       </CardContent>
