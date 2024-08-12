@@ -25,7 +25,7 @@ const MenuPage = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("/api/products");
+      const response = await fetch("/api/menu");
       //   console.log("response:" + response)
       const data = await response.json();
       //   console.log("data:" + data)
@@ -39,9 +39,16 @@ const MenuPage = () => {
       <div className="w-full my-4 md:flex md:flex-wrap">
         <h1 className="text-white">List of products:</h1>
         {products.map((product) => (
+          <Link
+          href={`/product/${product.id}`}
+          key={product.id}
+          className="w-full h-1/3 bg-cover p-8 md:h-1/2"
+          style={{ backgroundImage: `url(${product.img})` }}
+        >
           <h1 className="text-white" key={product.id}>
             {product.title}
           </h1>
+        </Link>
         ))}
       </div>
     </main>

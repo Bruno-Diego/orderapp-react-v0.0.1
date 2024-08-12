@@ -5,21 +5,6 @@ import Link from "next/link";
 import React from "react";
 import { useEffect, useState } from "react";
 
-const getData = async (category: string) => {
-  const res = await fetch(
-    `http://localhost:3000/api/products?catSlug=${category}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed!");
-  }
-
-  return res.json();
-};
-
 interface Product {
   id: string;
   title: string;
