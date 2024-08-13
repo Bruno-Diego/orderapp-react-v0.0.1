@@ -1,20 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-
-const getData = async (id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch product data!");
-  }
-
-  return res.json();
-};
+import { BsBagCheck, BsDashLg, BsPlusLg } from "react-icons/bs";
 
 interface Product {
   id: string;
@@ -32,6 +22,17 @@ type Props = {
 
 const ProductPage = ({ params }: Props) => {
   const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState(4);
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async (id: string) => {
@@ -44,48 +45,89 @@ const ProductPage = ({ params }: Props) => {
         setProduct(null); // Optional: set product to null in case of an error
       }
     };
-  
-    if (params.id) { // Ensure params.id is defined before calling fetchProduct
+
+    if (params.id) {
+      // Ensure params.id is defined before calling fetchProduct
       fetchProduct(params.id);
     }
   }, [params.id]);
-  
+
   if (!product) {
     return <div className="text-lg text-white">Loading...</div>;
   }
-  
-
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold">{product.title}</h1>
-      <p className="text-lg text-white">{product.catSlug}</p>
-      <p className="text-xl font-semibold">${product.price}</p>
-      {product.img && (
-        <Image
-          src={product.img}
-          alt={product.title}
-          width={500}
-          height={500}
-          className="my-4"
-        />
-      )}
-      <p className="text-md">{product.desc}</p>
-      {product.options && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Options:</h3>
-          <ul className="list-disc list-inside">
-            {product.options.map((option, index) => (
-              <li key={index}>
-                {option.title} (+${option.additionalPrice})
-              </li>
-            ))}
-          </ul>
+    <div className="min-h-screen bg-yellow-100 p-6 flex justify-center items-center">
+      <div className="max-w-lg bg-white shadow-md rounded-lg overflow-hidden">
+        {/* Imagem do Produto */}
+        <div className="relative m-5">
+          {product.img && (
+            <Image
+              src={product.img}
+              alt={product.title}
+              width={500}
+              height={500}
+              className="w-full h-full object-cover"
+            />
+          )}
         </div>
-      )}
-      <Link href={`/category/${product.catSlug}`}>
-        <div className="text-blue-500 underline mt-4 block">Back to category</div>
-      </Link>
+        {/* Detalhes do Produto */}
+        <div className="p-6">
+          <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
+          <p className="text-gray-700 text-lg mb-4">{product.desc}</p>
+          <p className="text-2xl font-bold text-green-600 mb-4">
+            €{product.price}
+          </p>
+          <div className="text-right">
+            <div className="flex items-center space-x-2">
+              <Button size="icon" onClick={handleDecrease}>
+                <BsDashLg className="h-4 w-4" />
+              </Button>
+              <span className="text-lg">{quantity}</span>
+              <Button size="icon" onClick={handleIncrease}>
+                <BsPlusLg className="h-4 w-4" />
+              </Button>
+              <Button className="flex items-center">
+                <BsBagCheck className="h-6 w-6" />
+                <span className="mx-2">Aggiungi</span>
+              </Button>
+              {/* Admin buttons */}
+              <Button>Edit</Button>
+              <Button variant="destructive">Delete Product</Button>
+            </div>
+          </div>
+        </div>
+        {/* <h1 className="text-3xl font-bold">{product.title}</h1>
+        <p className="text-lg text-white">{product.catSlug}</p>
+        <p className="text-xl font-semibold">${product.price}</p>
+        {product.img && (
+          <Image
+            src={product.img}
+            alt={product.title}
+            width={500}
+            height={500}
+            className="w-full h-full object-cover"
+          />
+        )}
+        <p className="text-md">{product.desc}</p>
+        {product.options && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Options:</h3>
+            <ul className="list-disc list-inside">
+              {product.options.map((option, index) => (
+                <li key={index}>
+                  {option.title} (+${option.additionalPrice})
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <Link href={`/category/${product.catSlug}`}>
+          <div className="text-blue-500 underline mt-4 block">
+            Back to category
+          </div>
+        </Link> */}
+      </div>
     </div>
   );
 };

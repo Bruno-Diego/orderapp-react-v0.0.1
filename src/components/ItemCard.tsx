@@ -102,6 +102,7 @@ const ItemCard = () => {
                     <BsBagCheck className="h-6 w-6" />
                     <span className="mx-2">Aggiungi</span>
                   </Button>
+                  {/* Admin Button */}
                   <Button variant="destructive">Delete Product</Button>
                 </div>
               </div>
