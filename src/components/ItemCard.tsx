@@ -7,6 +7,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useUser } from "@clerk/nextjs";
+import { prisma } from "@/lib/db";
+
 import {
   Card,
   CardContent,
@@ -25,6 +28,20 @@ interface ItemCardProps {
 
 const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { user } = useUser(); // Obtém o usuário autenticado
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminRole = async () => {
+      if (user) {
+        const response = await fetch("/api/admincheck");
+        console.log("response: "+ response)
+        const data = await response.json();
+        setIsAdmin(data.isAdmin);
+      }
+    };
+    checkAdminRole();
+  }, [user]);
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -53,9 +70,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                 <Skeleton className="h-24 w-24 rounded-full" />
               )}
               <div className="ml-4 flex-1 space-y-4">
-                <CardTitle className="text-xl font-bold">
-                  {title}
-                </CardTitle>
+                <CardTitle className="text-xl font-bold">{title}</CardTitle>
                 <CardDescription className="text-gray-500">
                   {desc}
                 </CardDescription>
@@ -81,7 +96,11 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                 <span className="mx-2">Aggiungi</span>
               </Button>
               {/* Admin Button */}
-              <Button variant="destructive">Delete Product</Button>
+              {isAdmin && (
+                <button className="text-white bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded-lg">
+                  Delete Product
+                </button>
+              )}
             </div>
           </div>
         </CardContent>
