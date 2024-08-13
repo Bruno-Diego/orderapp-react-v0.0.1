@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { clerkUserId: userId },
     });
-    console.log("isadmin?" + user?.isAdmin);
+    
     if (user?.isAdmin === true) {
       return NextResponse.json({ isAdmin: true }, { status: 200 });
     } else {

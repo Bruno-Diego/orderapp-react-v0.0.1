@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
-import { BsDashLg, BsPlusLg, BsBagCheck } from "react-icons/bs";
+import { BsDashLg, BsPlusLg, BsBagCheck, BsTrash3, BsPencilSquare } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
@@ -35,7 +35,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
     const checkAdminRole = async () => {
       if (user) {
         const response = await fetch("/api/admincheck");
-        console.log("response: "+ response)
+        console.log("response: " + response);
         const data = await response.json();
         setIsAdmin(data.isAdmin);
       }
@@ -97,9 +97,14 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
               </Button>
               {/* Admin Button */}
               {isAdmin && (
-                <button className="text-white bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded-lg">
-                  Delete Product
-                </button>
+                <div className="w-1/3">
+                  <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
+                    <BsPencilSquare className="h-6 w-6" />
+                  </Button>
+                  <Button className="text-white bg-red-600 hover:bg-red-700 m-1 font-bold py-2 px-4 rounded-lg">
+                    <BsTrash3 className="h-6 w-6" />
+                  </Button>
+                </div>
               )}
             </div>
           </div>
