@@ -37,9 +37,18 @@ const MenuPage = () => {
   }, []);
   return (
     <main className="min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-white">List of products:</h1>
+      <h1 className="text-black text-3xl font-bold mb-8">List of Products</h1>
       <div className="w-full flex-wrap md:flex md:flex-nowrap">
-        <ItemCard />
+        {products.map((product) => (
+          <ItemCard
+            key={product.id}
+            id={product.id}
+            title={product.title}
+            price={product.price}
+            img={product.img}
+            desc={product.desc}
+          />
+        ))}
       </div>
     </main>
   );

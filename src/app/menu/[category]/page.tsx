@@ -1,5 +1,6 @@
 "use client";
 
+import ItemCard from "@/components/ItemCard";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -19,7 +20,6 @@ type Props = {
   params: { category: string };
 };
 
-
 const CategoryPage = ({ params }: Props) => {
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -27,7 +27,7 @@ const CategoryPage = ({ params }: Props) => {
     const fetchProducts = async (category: string) => {
       const response = await fetch(`/api/products?catSlug=${category}`);
       const data = await response.json();
-      console.log(response)
+      console.log(response);
       setProducts(data);
     };
 
@@ -35,17 +35,21 @@ const CategoryPage = ({ params }: Props) => {
   }, [params.category]);
 
   return (
-    <div className="flex flex-wrap text-red-500">
-      <h1>{params.category}</h1>
-      {products.map((product) => (
-        <div key={product.id}>
-          <h2>{product.title}</h2>
-          <p>{product.catSlug}</p>
-          <p>${product.price}</p>
-          {product.img && <img src={product.img} alt={product.title} />}
-        </div>
-      ))}
-    </div>
+    <main className="min-h-screen flex-col items-center justify-between p-24">
+      <h1 className="text-white text-3xl font-bold mb-6 text-center uppercase">{params.category}</h1>
+      <div className="w-full flex-wrap md:flex md:flex-nowrap">
+        {products.map((product) => (
+          <ItemCard
+            key={product.id}
+            id={product.id}
+            title={product.title}
+            price={product.price}
+            img={product.img}
+            desc={product.desc}
+          />
+        ))}
+      </div>
+    </main>
   );
 };
 
