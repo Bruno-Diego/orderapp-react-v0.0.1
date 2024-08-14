@@ -4,7 +4,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { BsBagCheck, BsDashLg, BsPlusLg } from "react-icons/bs";
+import {
+  BsBagCheck,
+  BsDashLg,
+  BsPencilSquare,
+  BsPlusLg,
+  BsTrash3,
+} from "react-icons/bs";
 
 interface Product {
   id: string;
@@ -22,7 +28,7 @@ type Props = {
 
 const ProductPage = ({ params }: Props) => {
   const [product, setProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState(4);
+  const [quantity, setQuantity] = useState(1);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -58,7 +64,7 @@ const ProductPage = ({ params }: Props) => {
 
   return (
     <div className="min-h-screen bg-yellow-100 p-6 flex justify-center items-center">
-      <div className="max-w-lg bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="w-full md:w-1/2 bg-white shadow-md rounded-lg overflow-hidden">
         {/* Imagem do Produto */}
         <div className="relative m-5">
           {product.img && (
@@ -78,23 +84,29 @@ const ProductPage = ({ params }: Props) => {
           <p className="text-2xl font-bold text-green-600 mb-4">
             €{product.price}
           </p>
-          <div className="text-right">
-            <div className="flex items-center space-x-2">
-              <Button size="icon" onClick={handleDecrease}>
-                <BsDashLg className="h-4 w-4" />
-              </Button>
-              <span className="text-lg">{quantity}</span>
-              <Button size="icon" onClick={handleIncrease}>
-                <BsPlusLg className="h-4 w-4" />
-              </Button>
-              <Button className="flex items-center">
-                <BsBagCheck className="h-6 w-6" />
-                <span className="mx-2">Aggiungi</span>
-              </Button>
-              {/* Admin buttons */}
-              <Button>Edit</Button>
-              <Button variant="destructive">Delete Product</Button>
-            </div>
+          <div className="flex items-center justify-around md:justify-center m-5 flex-wrap">
+            <Button size="icon" onClick={handleDecrease}>
+              <BsDashLg className="h-4 w-4" />
+            </Button>
+            <span className="text-lg m-2">{quantity}</span>
+            <Button size="icon" onClick={handleIncrease}>
+              <BsPlusLg className="h-4 w-4" />
+            </Button>
+            <Button className="flex items-center mx-4">
+              <BsBagCheck className="h-6 w-6" />
+              <span className="mx-2">Aggiungi</span>
+            </Button>
+            {/* Admin buttons */}
+          </div>
+          <div className="flex justify-around my-5 flex-wrap">
+            <Button>
+              <BsPencilSquare className="h-6 w-6 mr-2" />
+              Edit
+            </Button>
+            <Button variant="destructive">
+              <BsTrash3 className="h-6 w-6 mr-2" />
+              Delete Product
+            </Button>
           </div>
         </div>
         {/* <h1 className="text-3xl font-bold">{product.title}</h1>
