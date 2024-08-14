@@ -22,3 +22,24 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unable to fetch products' }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    console.log(body)
+    // Verifica se todos os campos necessários foram preenchidos
+    if (!body.title || !body.desc || !body.price || !body.catSlug) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Cria o novo produto no banco de dados
+    const newProduct = await prisma.product.create({
+      data: body,
+    });
+
+    return NextResponse.json(newProduct, { status: 201 });
+  } catch (error) {
+    console.error('Error creating product:', error);
+    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
+  }
+}
