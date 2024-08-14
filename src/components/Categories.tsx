@@ -38,15 +38,15 @@ const Categories = () => {
     <div className='w-full my-4 md:flex md:flex-wrap'>
       
         {categories.map((category) => (
-          <div key={category.id} className='w-full my-4 lg:w-1/2 lg:px-4'>
+          <div key={category.id} className='w-full max-h-full my-4 lg:w-1/2 lg:px-4'>
             <Link href={`/menu/${category.slug}`}>
               <Card 
-              className={`w-full lg:min-h-full bg-white bg-cover bg-no-repeat bg-center`}
+              className={`w-full lg:min-h-full bg-white bg-cover bg-left bg-no-repeat md:bg-center`}
               style={{ backgroundImage: `url(${category.img})` }}
               >
-                <CardHeader className={`text-${category.color} w-1/2`}>
+                <CardHeader className={`text-${category.color} md:w-1/2 w-5/6`}>
                   <CardTitle>{category.title}</CardTitle>
-                  <CardDescription className={`text-${category.color}`}>{category.desc}</CardDescription>
+                  <CardDescription className={`text-${category.color} text-xs md:text-base`}>{category.desc}</CardDescription>
                 </CardHeader>
               </Card>
             </Link>
