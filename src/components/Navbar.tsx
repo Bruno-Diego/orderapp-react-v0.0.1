@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { FiPhone } from "react-icons/fi";
 import Link from "next/link";
-import Image from "next/image";
 import Logo from "./Logo";
-import { checkUser } from "@/lib/checkUser";
 import {
   SignInButton,
   SignedIn,
@@ -19,7 +17,6 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 

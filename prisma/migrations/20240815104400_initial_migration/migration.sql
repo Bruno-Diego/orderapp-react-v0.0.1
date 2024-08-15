@@ -37,7 +37,7 @@ CREATE TABLE "Category" (
     "title" TEXT NOT NULL,
     "desc" TEXT NOT NULL,
     "color" TEXT NOT NULL,
-    "img" TEXT NOT NULL,
+    "img" TEXT,
     "slug" TEXT NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
