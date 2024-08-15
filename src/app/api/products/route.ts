@@ -23,14 +23,15 @@ export async function GET(req: NextRequest) {
   }
 }
 
+// Create a product
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log(body)
+    // console.log(body)
     // Verifica se todos os campos necessários foram preenchidos
-    if (!body.title || !body.desc || !body.price || !body.catSlug) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
+    // if (!body.title || !body.desc || !body.price || !body.catSlug) {
+    //   return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    // }
 
     // Cria o novo produto no banco de dados
     const newProduct = await prisma.product.create({

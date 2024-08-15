@@ -32,10 +32,13 @@ import { Button } from "@/components/ui/button";
 
 type FormValues = {
   title: string;
-  description: string;
+  desc: string;
   price: number;
-  catSlug: string;
   img?: FileList;
+  isFeatured: string;
+  catSlug: string;
+  category: string;
+  options: JSON[];
 };
 
 const AddProductPage = () => {
@@ -90,10 +93,17 @@ const AddProductPage = () => {
       // Agora submeta os dados do formulário junto com a URL da imagem
       const productData = {
         title: data.title,
-        description: data.description,
+        desc: data.desc,
         price: data.price,
-        catSlug: data.catSlug,
+        isFeatured: data.isFeatured ? true : false,
+        options: [""],
         img, // Armazene a URL da imagem no banco de dados
+        // catSlug: data.catSlug,
+        category: {
+          connect: {
+            slug: data.catSlug, // Ensure this slug exists in your Category table
+          },
+        },
       };
       // console.log(productData)
       const res = await fetch("/api/products", {
@@ -154,7 +164,7 @@ const AddProductPage = () => {
 
           {/* Campo de Descrição */}
           <FormField
-            name="description"
+            name="desc"
             control={methods.control}
             render={({ field }) => (
               <FormItem>
@@ -168,8 +178,8 @@ const AddProductPage = () => {
                 <FormDescription>
                   Una descrizione dettagliata del prodotto.
                 </FormDescription>
-                {errors.description && (
-                  <FormMessage>{errors.description.message}</FormMessage>
+                {errors.desc && (
+                  <FormMessage>{errors.desc.message}</FormMessage>
                 )}
               </FormItem>
             )}
@@ -224,6 +234,32 @@ const AddProductPage = () => {
                 </FormDescription>
                 {errors.catSlug && (
                   <FormMessage>{errors.catSlug.message}</FormMessage>
+                )}
+              </FormItem>
+            )}
+          />
+
+          {/* Campo de Evidencia */}
+          <FormField
+            name="isFeatured"
+            control={methods.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mettere in evidenza?</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  >
+                    <option value="false">No</option>
+                    <option value="true">Si</option>
+                  </select>
+                </FormControl>
+                <FormDescription>
+                  La categoria a cui appartiene il prodotto.
+                </FormDescription>
+                {errors.isFeatured && (
+                  <FormMessage>{errors.isFeatured.message}</FormMessage>
                 )}
               </FormItem>
             )}
