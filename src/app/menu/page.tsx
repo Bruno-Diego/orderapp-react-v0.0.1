@@ -36,8 +36,10 @@ const MenuPage = () => {
     fetchProducts();
   }, []);
   return (
-    <main className="min-h-screen w-full flex-col items-center justify-between md:p-24">
-      <h1 className="text-black text-3xl font-bold mb-8">List of Products</h1>
+    <main className="min-h-screen w-full flex-col items-center justify-between md:p-8">
+      <h1 className="text-white text-center p-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        Esplora nostri prodotti
+      </h1>
       <div className="w-full flex-wrap md:flex md:flex-nowrap">
         {products.map((product) => (
           <ItemCard

@@ -35,8 +35,10 @@ const CategoryPage = ({ params }: Props) => {
   }, [params.category]);
 
   return (
-    <main className="min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-white text-3xl font-bold mb-6 text-center uppercase">{params.category}</h1>
+    <main className="min-h-screen flex-col items-center justify-between p-8">
+      <h1 className="text-white text-center uppercase scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        {params.category}
+      </h1>
       <div className="w-full flex-wrap md:flex md:flex-nowrap">
         {products.map((product) => (
           <ItemCard

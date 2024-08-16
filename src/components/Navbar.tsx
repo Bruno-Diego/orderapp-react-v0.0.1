@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <div className="text-red-500 p-4 flex items-center justify-between border-b-2 border-b-red-500 uppercase lg:px-20 xl:px-40">
       {/* LEFT LINKS */}
-      <div className="hidden md:flex gap-4 flex-1">
+      <div className="hidden md:flex gap-4">
         <Link href="/">Homepage</Link>
         <Link href="/menu">Menu</Link>
         <Link href="/contact">Contatto</Link>
@@ -54,7 +54,7 @@ const Navbar = () => {
           </Button>
         )}
       </div>
-      <div className="md:hidden flex gap-4 flex-1">
+      <div className="md:hidden flex gap-4">
         <Menubar>
           <MenubarMenu>
             <MenubarTrigger>
@@ -95,20 +95,22 @@ const Navbar = () => {
       {/* MOBILE MENU */}
       <div className="md:hidden">{/* <Menu /> */}</div>
       {/* RIGHT LINKS */}
-      <div className="md:absolute top-3 r-2 lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </div>
-      <div className="hidden md:flex gap-4 items-center justify-end flex-1">
-        <div className="md:absolute top-3 r-2 lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
-          <FiPhone />
-          <a href="tel:+393240560356" className="">
-            324 056 0356
-          </a>
+      <div>
+        <div className="lg:static flex items-center justify-center gap-2 cursor-pointer rounded-md">
+          <SignedOut>
+            <div className="bg-yellow-100 px-1 my-1 cursor-pointer rounded-md">
+              <SignInButton />
+            </div>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
+        <div className="md:flex gap-4 items-center justify-end flex-1">
+          <div className="lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
+            <FiPhone />
+            <a href="tel:+393240560356">324 056 0356</a>
+          </div>
         </div>
         {/* <UserLinks/>
         <CartIcon /> */}
