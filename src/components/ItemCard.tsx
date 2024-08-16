@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   BsDashLg,
@@ -22,11 +23,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useCartStore } from "@/lib/store";
+
+interface Product {
+  id: string;
+  title: string;
+  catSlug: string;
+  desc?: string;
+  img?: string;
+  price: number;
+  options?: { title: string; additionalPrice: number }[];
+}
 
 interface ItemCardProps {
   id: string;
   title: string;
-  price: number;
+  price: number|string;
   img?: string;
   desc?: string;
 }
@@ -35,6 +47,9 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   const [quantity, setQuantity] = useState(1);
   const { user } = useUser(); // Obtém o usuário autenticado
   const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter(); // Initialize useRouter
+  const [product, setProduct] = useState<Product | null>(null);
+  const { addToCart } = useCartStore((state) => state);
 
   useEffect(() => {
     const checkAdminRole = async () => {
@@ -48,6 +63,23 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
     checkAdminRole();
   }, [user]);
 
+  const handleDelete = async () => {
+    if (id) {
+      try {
+        const response = await fetch(`/api/products/${id}`, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          router.push("/menu"); // Redirect to menu after deletion
+        } else {
+          console.error("Failed to delete product");
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    }
+  };
+
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
@@ -57,6 +89,24 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
       setQuantity(quantity - 1);
     }
   };
+
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  const handleAddToCart = () => {
+    if (id) {
+      addToCart({
+        id,
+        name: title,
+        price: numericPrice,
+        quantity,
+      });
+    }
+  };
+
+  
+  if (!id) {
+    return <div className="text-lg text-white">Loading...</div>;
+  }
+
   return (
     <div className="w-full m-4" key={id}>
       <Card className="max-w-lg mt-4 shadow-lg rounded-lg md:p-4">
@@ -99,7 +149,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                 <Button size="icon" onClick={increaseQuantity}>
                   <BsPlusLg className="h-4 w-4" />
                 </Button>
-                <Button className="flex items-center">
+                <Button className="flex items-center" onClick={handleAddToCart}>
                   <BsBagCheck className="h-6 w-6" />
                   <span className="mx-2">Aggiungi</span>
                 </Button>
@@ -110,7 +160,10 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                   <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
                     <BsPencilSquare className="h-6 w-6" />
                   </Button>
-                  <Button className="text-white bg-red-600 hover:bg-red-700 m-1 font-bold py-2 px-4 rounded-lg">
+                  <Button
+                    className="text-white bg-red-600 hover:bg-red-700 m-1 font-bold py-2 px-4 rounded-lg"
+                    onClick={handleDelete}
+                  >
                     <BsTrash3 className="h-6 w-6" />
                   </Button>
                 </div>

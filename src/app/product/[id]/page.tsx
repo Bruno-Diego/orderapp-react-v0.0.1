@@ -14,7 +14,7 @@ interface Product {
   catSlug: string;
   desc?: string;
   img?: string;
-  price: number;
+  price: number|string;
   options?: { title: string; additionalPrice: number }[];
 }
 
@@ -74,11 +74,11 @@ const ProductPage = ({ params }: Props) => {
 
   const handleAddToCart = () => {
     if (product) {
-      console.log(product)
+      const numericPrice = typeof product.price === 'string' ? parseFloat(product.price) : product.price;
       addToCart({
         id: product.id,
         name: product.title,
-        price: product.price,
+        price: numericPrice,
         quantity: quantity,
       });
     }

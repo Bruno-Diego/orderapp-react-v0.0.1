@@ -37,6 +37,8 @@ export const useCartStore = create<CartType & ActionTypes>()(
       addToCart: (item) => {
         const { products, totalItems, totalPrice } = get();
         console.log("item received...")
+        console.log(item)
+
         const productInState = products.find(
           (product) => product.id === item.id
         );
@@ -50,20 +52,20 @@ export const useCartStore = create<CartType & ActionTypes>()(
             // Corrigindo o cálculo do preço
                   price:
                     product.price +
-                    (item.price / item.quantity) * item.quantity,
+                    (item.price * item.quantity),
                   }
                   : product
                 );
                 set({
                   products: updatedProducts,
                   totalItems: totalItems + item.quantity,
-                  totalPrice: totalPrice + item.price,
+                  totalPrice: totalPrice + item.price * item.quantity,
                 });
               } else {
                 set({
                   products: [...products, item],
                   totalItems: totalItems + item.quantity,
-                  totalPrice: totalPrice + item.price,
+                  totalPrice: totalPrice + item.price * item.quantity,
                 });
               }
               console.log("item added...")
