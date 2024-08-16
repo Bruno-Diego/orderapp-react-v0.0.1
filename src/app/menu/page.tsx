@@ -36,7 +36,7 @@ const MenuPage = () => {
     fetchProducts();
   }, []);
   return (
-    <main className="min-h-screen flex-col items-center justify-between p-24">
+    <main className="min-h-screen w-full flex-col items-center justify-between md:p-24">
       <h1 className="text-black text-3xl font-bold mb-8">List of Products</h1>
       <div className="w-full flex-wrap md:flex md:flex-nowrap">
         {products.map((product) => (
