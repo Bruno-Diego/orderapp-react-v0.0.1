@@ -22,6 +22,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { FaBars } from "react-icons/fa";
+import CartIcon from "./CartIcon";
+import CartDrawer from "./CartDrawer";
 
 const Navbar = () => {
   const { user } = useUser(); // Obtém o usuário autenticado
@@ -106,14 +108,17 @@ const Navbar = () => {
             <UserButton />
           </SignedIn>
         </div>
-        <div className="md:flex gap-4 items-center justify-end flex-1">
+        <div className="md:flex gap-4 items-center justify-center flex-1">
           <div className="lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
             <FiPhone />
             <a href="tel:+393240560356">324 056 0356</a>
           </div>
         </div>
-        {/* <UserLinks/>
-        <CartIcon /> */}
+        {/* <UserLinks/> */}
+        {/* <CartIcon /> */}
+        <div className="my-1 flex justify-center">
+          <CartDrawer />
+        </div>
       </div>
     </div>
   );

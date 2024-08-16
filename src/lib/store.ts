@@ -1,80 +1,109 @@
-import { ActionTypes, CartType } from "@/types/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const INITIAL_STATE = {
+// Definições de tipos (assumindo que essas são suas interfaces)
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface CartType {
+  products: Product[];
+  totalItems: number;
+  totalPrice: number;
+}
+
+interface ActionTypes {
+  addToCart: (item: Product) => void;
+  removeFromCart: (item: Product) => void;
+  resetCart: () => void;
+}
+
+// Estado inicial
+const INITIAL_STATE: CartType = {
   products: [],
   totalItems: 0,
   totalPrice: 0,
 };
 
-export const useCartStore = create(
-  persist<CartType & ActionTypes>(
+// Criando a store do carrinho com persistência
+export const useCartStore = create<CartType & ActionTypes>()(
+  persist(
     (set, get) => ({
-      products: INITIAL_STATE.products,
-      totalItems: INITIAL_STATE.totalItems,
-      totalPrice: INITIAL_STATE.totalPrice,
-      addToCart(item) {
-        const products = get().products;
+      ...INITIAL_STATE,
+
+      addToCart: (item) => {
+        const { products, totalItems, totalPrice } = get();
+        console.log("item received...")
         const productInState = products.find(
           (product) => product.id === item.id
         );
-
+        
         if (productInState) {
           const updatedProducts = products.map((product) =>
             product.id === productInState.id
-              ? {
-                  ...product,
-                  quantity: product.quantity + item.quantity,
-                  price: product.price + item.price,
-                }
-              : product
-          );
-          set((state) => ({
-            products: updatedProducts,
-            totalItems: state.totalItems + item.quantity,
-            totalPrice: state.totalPrice + item.price,
-          }));
-        } else {
-          set((state) => ({
-            products: [...state.products, item],
-            totalItems: state.totalItems + item.quantity,
-            totalPrice: state.totalPrice + item.price,
-          }));
-        }
-      },
-      removeFromCart(item) {
-        const products = get().products;
-        const productInState = products.find(
-          (product) => product.id === item.id
-        );
-
-        if (!productInState) return;
-
-        const updatedProducts = products
-          .map((product) =>
+          ? {
+            ...product,
+            quantity: product.quantity + item.quantity,
+            // Corrigindo o cálculo do preço
+                  price:
+                    product.price +
+                    (item.price / item.quantity) * item.quantity,
+                  }
+                  : product
+                );
+                set({
+                  products: updatedProducts,
+                  totalItems: totalItems + item.quantity,
+                  totalPrice: totalPrice + item.price,
+                });
+              } else {
+                set({
+                  products: [...products, item],
+                  totalItems: totalItems + item.quantity,
+                  totalPrice: totalPrice + item.price,
+                });
+              }
+              console.log("item added...")
+            },
+            
+            removeFromCart: (item) => {
+              const { products, totalItems, totalPrice } = get();
+              console.log("item to be removed...")
+              
+              const productInState = products.find(
+                (product) => product.id === item.id
+              );
+              
+              if (!productInState) return;
+              
+              const updatedProducts = products
+              .map((product) =>
             product.id === productInState.id
               ? {
-                  ...product,
-                  quantity: product.quantity - item.quantity,
-                  price: product.price - item.price,
-                }
+                ...product,
+                quantity: product.quantity - item.quantity,
+                // Corrigindo o cálculo do preço
+                price:
+                product.price -
+                (product.price / product.quantity) * item.quantity,
+              }
               : product
-          )
-          .filter((product) => product.quantity > 0);
-
-        set((state) => ({
-          products: updatedProducts,
-          totalItems: state.totalItems - item.quantity,
-          totalPrice: state.totalPrice - item.price,
-        }));
-      },
-      resetCart() {
-        set({
-          products: INITIAL_STATE.products,
-          totalItems: INITIAL_STATE.totalItems,
-          totalPrice: INITIAL_STATE.totalPrice,
-        });
+            )
+            .filter((product) => product.quantity > 0);
+            
+            set({
+              products: updatedProducts,
+              totalItems: totalItems - item.quantity,
+              totalPrice: totalPrice - item.price,
+            });
+            console.log("item removed...")
+          },
+          
+          resetCart: () => {
+        set(INITIAL_STATE);
       },
     }),
     { name: "cart", skipHydration: true }
