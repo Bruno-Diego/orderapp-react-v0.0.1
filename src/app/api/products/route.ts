@@ -44,3 +44,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
 }
+
+// Update an existing product
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, ...data } = body; // Extract the product ID and the rest of the product data
+
+    if (!id) {
+      return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
+    }
+    console.log(data)
+    // Update the product in the database
+    const updatedProduct = await prisma.product.update({
+      where: { id }, // Find the product by its ID
+      data, // Update the product with the provided data
+    });
+
+    return NextResponse.json(updatedProduct, { status: 200 });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
+  }
+}
+

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // For redirecting after delete
 import React, { useEffect, useState } from "react";
 import {
   BsBagCheck,
@@ -29,6 +30,7 @@ type Props = {
 const ProductPage = ({ params }: Props) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const router = useRouter(); // Initialize useRouter
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -44,19 +46,35 @@ const ProductPage = ({ params }: Props) => {
     const fetchProduct = async (id: string) => {
       try {
         const response = await fetch(`/api/products/${id}`);
-        const data: Product = await response.json(); // Ensure getData returns a Product
+        const data: Product = await response.json();
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
-        setProduct(null); // Optional: set product to null in case of an error
+        setProduct(null);
       }
     };
 
     if (params.id) {
-      // Ensure params.id is defined before calling fetchProduct
       fetchProduct(params.id);
     }
   }, [params.id]);
+
+  const handleDelete = async () => {
+    if (product) {
+      try {
+        const response = await fetch(`/api/products/${product.id}`, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          router.push("/menu"); // Redirect to menu after deletion
+        } else {
+          console.error("Failed to delete product");
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    }
+  };
 
   if (!product) {
     return <div className="text-lg text-white">Loading...</div>;
@@ -65,7 +83,7 @@ const ProductPage = ({ params }: Props) => {
   return (
     <div className="min-h-screen bg-yellow-100 p-6 flex justify-center items-center">
       <div className="w-full md:w-1/2 bg-white shadow-md rounded-lg overflow-hidden">
-        {/* Imagem do Produto */}
+        {/* Product Image */}
         <div className="relative m-5">
           {product.img && (
             <Image
@@ -77,7 +95,7 @@ const ProductPage = ({ params }: Props) => {
             />
           )}
         </div>
-        {/* Detalhes do Produto */}
+        {/* Product Details */}
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
           <p className="text-gray-700 text-lg mb-4">{product.desc}</p>
@@ -99,46 +117,20 @@ const ProductPage = ({ params }: Props) => {
             {/* Admin buttons */}
           </div>
           <div className="flex justify-around my-5 flex-wrap">
-            <Button>
-              <BsPencilSquare className="h-6 w-6 mr-2" />
-              Edit
-            </Button>
-            <Button variant="destructive">
+            {/* Edit Button */}
+            <Link href={`/product/${product.id}/edit`}>
+              <Button>
+                <BsPencilSquare className="h-6 w-6 mr-2" />
+                Edit
+              </Button>
+            </Link>
+            {/* Delete Button */}
+            <Button variant="destructive" onClick={handleDelete}>
               <BsTrash3 className="h-6 w-6 mr-2" />
               Delete Product
             </Button>
           </div>
         </div>
-        {/* <h1 className="text-3xl font-bold">{product.title}</h1>
-        <p className="text-lg text-white">{product.catSlug}</p>
-        <p className="text-xl font-semibold">${product.price}</p>
-        {product.img && (
-          <Image
-            src={product.img}
-            alt={product.title}
-            width={500}
-            height={500}
-            className="w-full h-full object-cover"
-          />
-        )}
-        <p className="text-md">{product.desc}</p>
-        {product.options && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Options:</h3>
-            <ul className="list-disc list-inside">
-              {product.options.map((option, index) => (
-                <li key={index}>
-                  {option.title} (+${option.additionalPrice})
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <Link href={`/category/${product.catSlug}`}>
-          <div className="text-blue-500 underline mt-4 block">
-            Back to category
-          </div>
-        </Link> */}
       </div>
     </div>
   );
