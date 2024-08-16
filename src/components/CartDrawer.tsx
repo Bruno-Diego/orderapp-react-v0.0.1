@@ -4,6 +4,13 @@ import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, Drawer
 import { Button } from '@/components/ui/button'; // Substitua pelo botão da sua biblioteca de UI
 import { BsTrash } from 'react-icons/bs'; // Ícone para o botão de remoção
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 const CartDrawer = () => {
   // Obtenha o estado do carrinho da store
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore();
@@ -15,8 +22,8 @@ const CartDrawer = () => {
   };
 
   // Função para lidar com a remoção de um item
-  const handleRemove = (id: string) => {
-    removeFromCart({ id, quantity: 1 }); // Ajuste a quantidade conforme necessário
+  const handleRemove = (product: Product) => {
+    removeFromCart(product); // Ajuste a quantidade conforme necessário
   };
 
   return (
@@ -44,7 +51,7 @@ const CartDrawer = () => {
                   <Button
                     variant="destructive"
                     size="icon"
-                    onClick={() => handleRemove(product.id)}
+                    onClick={() => handleRemove(product)}
                     className="ml-2"
                   >
                     <BsTrash className="h-5 w-5" />
