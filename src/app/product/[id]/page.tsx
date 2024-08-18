@@ -105,12 +105,12 @@ const ProductPage = ({ params }: Props) => {
         </div>
         {/* Product Details */}
         <div className="p-6">
-          <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-          <p className="text-gray-700 text-lg mb-4">{product.desc}</p>
-          <p className="text-2xl font-bold text-green-600 mb-4">
+          <h1 className="text-3xl font-bold mb-2 text-center">{product.title}</h1>
+          <p className="text-gray-700 text-lg mb-4 text-center">{product.desc}</p>
+          <p className="text-2xl font-bold text-green-600 mb-4 text-center">
             €{product.price}
           </p>
-          <div className="flex items-center justify-around md:justify-center m-5 flex-wrap">
+          <div className="flex items-center justify-center m-5 flex-wrap">
             <Button size="icon" onClick={handleDecrease}>
               <BsDashLg className="h-4 w-4" />
             </Button>

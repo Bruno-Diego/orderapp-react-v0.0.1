@@ -22,7 +22,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { FaBars } from "react-icons/fa";
-import CartIcon from "./CartIcon";
 import CartDrawer from "./CartDrawer";
 
 const Navbar = () => {
@@ -89,7 +88,7 @@ const Navbar = () => {
         </Menubar>
       </div>
       {/* LOGO */}
-      <div className="text-xl md:font-bold flex-1 md:text-center">
+      <div className="text-xl md:font-bold md:flex-1 md:text-center">
         <Link href="/">
           <Logo />
         </Link>
@@ -97,7 +96,7 @@ const Navbar = () => {
       {/* MOBILE MENU */}
       <div className="md:hidden">{/* <Menu /> */}</div>
       {/* RIGHT LINKS */}
-      <div>
+      <div className="">
         <div className="lg:static flex items-center justify-center gap-2 cursor-pointer rounded-md">
           <SignedOut>
             <div className="bg-yellow-100 px-1 my-1 cursor-pointer rounded-md">
@@ -109,9 +108,9 @@ const Navbar = () => {
           </SignedIn>
         </div>
         <div className="md:flex gap-4 items-center justify-center flex-1">
-          <div className="lg:static flex items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
-            <FiPhone />
-            <a href="tel:+393240560356">324 056 0356</a>
+          <div className="lg:static flex flex-col md:flex-row items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
+            <FiPhone className="w-6 h-6 md:w-4 md:h-4"/>
+            <a className="text-xs hidden md:flex" href="tel:+393240560356">324 056 0356</a>
           </div>
         </div>
         {/* <UserLinks/> */}

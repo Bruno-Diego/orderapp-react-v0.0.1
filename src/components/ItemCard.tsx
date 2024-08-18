@@ -108,11 +108,11 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   }
 
   return (
-    <div className="w-full m-4" key={id}>
+    <div className="md:w-full m-4" key={id}>
       <Card className="max-w-lg mt-4 shadow-lg rounded-lg md:p-4">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
-            <div className="md:flex m-auto">
+            <div className="md:flex p-0 m-auto">
               {img ? (
                 <Image
                   src={img}
