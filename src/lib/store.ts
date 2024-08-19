@@ -37,78 +37,101 @@ export const useCartStore = create<CartType & ActionTypes>()(
 
       addToCart: (item) => {
         const { products, totalItems, totalPrice } = get();
-        console.log("item received...")
-        console.log(item)
 
         const productInState = products.find(
           (product) => product.id === item.id
         );
-        
+
         if (productInState) {
+          const newPrice = item.price * item.quantity
           const updatedProducts = products.map((product) =>
-            product.id === productInState.id
-          ? {
-            ...product,
-            quantity: product.quantity + item.quantity,
-            // Corrigindo o cálculo do preço
-                  price:
-                    product.price +
-                    (item.price * item.quantity),
-                  }
-                  : product
-                );
-                set({
-                  products: updatedProducts,
-                  totalItems: totalItems + item.quantity,
-                  totalPrice: totalPrice + item.price * item.quantity,
-                });
-              } else {
-                set({
-                  products: [...products, item],
-                  totalItems: totalItems + item.quantity,
-                  totalPrice: totalPrice + item.price * item.quantity,
-                });
-              }
-              console.log("item added...")
-            },
-            
-            removeFromCart: (item) => {
-              const { products, totalItems, totalPrice } = get();
-              console.log("item to be removed...")
-              
-              const productInState = products.find(
-                (product) => product.id === item.id
-              );
-              
-              if (!productInState) return;
-              
-              const updatedProducts = products
-              .map((product) =>
-            product.id === productInState.id
+            product.id === item.id
               ? {
-                ...product,
-                quantity: product.quantity - item.quantity,
-                // Corrigindo o cálculo do preço
-                price:
-                product.price -
-                (product.price / product.quantity) * item.quantity,
-              }
+                  ...product,
+                  quantity: product.quantity + item.quantity,
+                  price: product.price + newPrice,
+                }
               : product
-            )
-            .filter((product) => product.quantity > 0);
-            
-            set({
-              products: updatedProducts,
-              totalItems: totalItems - item.quantity,
-              totalPrice: totalPrice - item.price,
-            });
-            console.log("item removed...")
-          },
-          
-          resetCart: () => {
+          );
+
+          set({
+            products: updatedProducts,
+            totalItems: totalItems + item.quantity,
+            totalPrice: totalPrice + item.price * item.quantity,
+          });
+        } else {
+          const newPrice = item.price * item.quantity
+          item.price = newPrice
+          set({
+            products: [...products, item],
+            totalItems: totalItems + item.quantity,
+            totalPrice: totalPrice + item.price,
+          });
+        }
+      },
+
+      removeFromCart: (item) => {
+        const { products, totalItems, totalPrice } = get();
+      
+        // Verifica se o produto existe no estado atual
+        const productInState = products.find(
+          (product) => product.id === item.id
+        );
+      
+        if (!productInState) return;
+      
+        // Remove completamente o produto da lista de produtos
+        const updatedProducts = products.filter(
+          (product) => product.id !== productInState.id
+        );
+      
+        // Atualiza o estado removendo o item completamente
+        set({
+          products: updatedProducts,
+          totalItems: totalItems - productInState.quantity, // Reduz a quantidade total
+          totalPrice: totalPrice - productInState.price, // Reduz o preço total
+        });
+      },
+      
+      // removeFromCart: (item) => {
+      //   const { products, totalItems, totalPrice } = get();
+
+      //   const productInState = products.find(
+      //     (product) => product.id === item.id
+      //   );
+
+      //   if (!productInState) return;
+
+      //   const updatedProducts = products
+      //     .map((product) =>
+      //       product.id === productInState.id
+      //         ? {
+      //             ...product,
+      //             quantity: product.quantity - item.quantity,
+      //             price:
+      //               product.price -
+      //               (product.price / product.quantity) * item.quantity,
+      //           }
+      //         : product
+      //     )
+      //     .filter((product) => product.quantity > 0);
+
+       
+
+      //   set({
+      //     products: updatedProducts,
+      //     totalItems: totalItems - item.quantity,
+      //     totalPrice: totalPrice - item.price * item.quantity,
+      //   });
+      // },
+
+      resetCart: () => {
         set(INITIAL_STATE);
       },
     }),
-    { name: "cart", skipHydration: true }
+    {
+      name: "cart",
+      skipHydration: true,
+    }
   )
 );
