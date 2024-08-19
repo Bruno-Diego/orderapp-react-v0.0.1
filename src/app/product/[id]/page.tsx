@@ -5,8 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // For redirecting after delete
 import React, { useEffect, useState } from "react";
-import { BsBagCheck, BsDashLg, BsPencilSquare, BsPlusLg, BsTrash3 } from "react-icons/bs";
+import {
+  BsBagCheck,
+  BsDashLg,
+  BsPencilSquare,
+  BsPlusLg,
+  BsTrash3,
+} from "react-icons/bs";
 import { useCartStore } from "@/lib/store"; // Import the cart store
+import { useUser } from "@clerk/nextjs";
 
 interface Product {
   id: string;
@@ -14,7 +21,7 @@ interface Product {
   catSlug: string;
   desc?: string;
   img?: string;
-  price: number|string;
+  price: number | string;
   options?: { title: string; additionalPrice: number }[];
 }
 
@@ -23,10 +30,24 @@ type Props = {
 };
 
 const ProductPage = ({ params }: Props) => {
+  const { user } = useUser(); // Obtém o usuário autenticado
+  const [isAdmin, setIsAdmin] = useState(false);
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const router = useRouter(); // Initialize useRouter
   const { addToCart } = useCartStore((state) => state); // Get addToCart function from store
+
+  useEffect(() => {
+    const checkAdminRole = async () => {
+      if (user) {
+        const response = await fetch("/api/admincheck");
+        console.log("response: " + response);
+        const data = await response.json();
+        setIsAdmin(data.isAdmin);
+      }
+    };
+    checkAdminRole();
+  }, [user]);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -74,7 +95,10 @@ const ProductPage = ({ params }: Props) => {
 
   const handleAddToCart = () => {
     if (product) {
-      const numericPrice = typeof product.price === 'string' ? parseFloat(product.price) : product.price;
+      const numericPrice =
+        typeof product.price === "string"
+          ? parseFloat(product.price)
+          : product.price;
       addToCart({
         id: product.id,
         name: product.title,
@@ -105,8 +129,12 @@ const ProductPage = ({ params }: Props) => {
         </div>
         {/* Product Details */}
         <div className="p-6">
-          <h1 className="text-3xl font-bold mb-2 text-center">{product.title}</h1>
-          <p className="text-gray-700 text-lg mb-4 text-center">{product.desc}</p>
+          <h1 className="text-3xl font-bold mb-2 text-center">
+            {product.title}
+          </h1>
+          <p className="text-gray-700 text-lg mb-4 text-center">
+            {product.desc}
+          </p>
           <p className="text-2xl font-bold text-green-600 mb-4 text-center">
             €{product.price}
           </p>
@@ -118,26 +146,31 @@ const ProductPage = ({ params }: Props) => {
             <Button size="icon" onClick={handleIncrease}>
               <BsPlusLg className="h-4 w-4" />
             </Button>
-            <Button className="flex items-center mx-4" onClick={handleAddToCart}>
+            <Button
+              className="flex items-center mx-4"
+              onClick={handleAddToCart}
+            >
               <BsBagCheck className="h-6 w-6" />
               <span className="mx-2">Aggiungi</span>
             </Button>
-            {/* Admin buttons */}
           </div>
-          <div className="flex justify-around my-5 flex-wrap">
-            {/* Edit Button */}
-            <Link href={`/product/${product.id}/edit`}>
-              <Button>
-                <BsPencilSquare className="h-6 w-6 mr-2" />
-                Edit
+          {/* Admin buttons */}
+          {isAdmin && (
+            <div className="flex justify-around my-5 flex-wrap">
+              {/* Edit Button */}
+              <Link href={`/product/${product.id}/edit`}>
+                <Button>
+                  <BsPencilSquare className="h-6 w-6 mr-2" />
+                  Edit
+                </Button>
+              </Link>
+              {/* Delete Button */}
+              <Button variant="destructive" onClick={handleDelete}>
+                <BsTrash3 className="h-6 w-6 mr-2" />
+                Delete Product
               </Button>
-            </Link>
-            {/* Delete Button */}
-            <Button variant="destructive" onClick={handleDelete}>
-              <BsTrash3 className="h-6 w-6 mr-2" />
-              Delete Product
-            </Button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
