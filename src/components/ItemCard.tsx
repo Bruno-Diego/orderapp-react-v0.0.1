@@ -96,6 +96,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
       addToCart({
         id,
         name: title,
+        img,
         price: numericPrice,
         quantity,
       });
