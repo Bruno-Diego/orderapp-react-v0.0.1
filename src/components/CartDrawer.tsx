@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useCartStore } from "@/lib/store"; // Regola il percorso secondo necessità
 import {
   Drawer,
@@ -36,17 +36,17 @@ const CartDrawer = () => {
   // Ottieni lo stato del carrello dallo store
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore();
 
-    // // UseState para controlar a reidratação
-    // const [isHydrated, setIsHydrated] = useState(false);
+    // UseState para controlar a reidratação
+    const [isHydrated, setIsHydrated] = useState(false);
 
-    // // Verifica se o Zustand foi reidratado
-    // useEffect(() => {
-    //   setIsHydrated(true);
-    // }, []);
+    // Verifica se o Zustand foi reidratado
+    useEffect(() => {
+      setIsHydrated(true);
+    }, []);
   
-    // if (!isHydrated) {
-    //   return <p>Loading...</p>; // Ou qualquer outra UI enquanto o Zustand hidrata
-    // }
+    if (!isHydrated) {
+      return <p>Loading...</p>; // Ou qualquer outra UI enquanto o Zustand hidrata
+    }
 
   // Funzione per garantire che `totalPrice` e `product.price` siano numeri
   const formatPrice = (price: string | number) => {

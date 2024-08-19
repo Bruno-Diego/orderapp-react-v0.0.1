@@ -131,7 +131,7 @@ export const useCartStore = create<CartType & ActionTypes>()(
     }),
     {
       name: "cart",
-      skipHydration: true,
+      // skipHydration: true,
     }
   )
 );
