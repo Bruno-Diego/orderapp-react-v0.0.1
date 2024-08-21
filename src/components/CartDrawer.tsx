@@ -88,21 +88,6 @@ const CartDrawer = () => {
   console.log("Products: " + products);
   // funzione per andare al checkout
   const handleCheckout = () => {
-    console.log(user);
-    if (user === null) {
-      <AlertDialog>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Accedi per ordinare!</AlertDialogTitle>
-            <AlertDialogAction>
-              <div className="bg-yellow-100 px-1 my-1 cursor-pointer rounded-md">
-                <SignInButton />
-              </div>
-            </AlertDialogAction>
-          </AlertDialogHeader>
-        </AlertDialogContent>
-      </AlertDialog>;
-    }
     router.push("/checkout");
   };
 

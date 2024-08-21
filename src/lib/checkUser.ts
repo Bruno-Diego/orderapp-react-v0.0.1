@@ -32,6 +32,7 @@ export const checkUser = async () => {
       name: `${user.firstName} ${user.lastName}`,
       imageUrl: user.imageUrl,
       email: user.emailAddresses[0].emailAddress,
+      address: "Si prega di fornire un indirizzo valido per la consegna.",
     },
   });
 

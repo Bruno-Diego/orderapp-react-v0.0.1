@@ -4,23 +4,18 @@ import { useRouter } from "next/navigation";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { useCartStore } from "@/lib/store"; // Adjust import path as needed
 import { Button } from "@/components/ui/button"; // Adjust import path as needed
-import { useAuth, SignInButton } from "@clerk/nextjs";
+import { useAuth, SignInButton, useUser } from "@clerk/nextjs";
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormDescription,
-  FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuidv4 } from "uuid";
+import { ClipLoader } from "react-spinners";
 
 const CheckoutPage: React.FC = () => {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
@@ -33,10 +28,31 @@ const CheckoutPage: React.FC = () => {
   const methods = useForm();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const { user } = useUser();
+
+  const uniqueId = uuidv4();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      if (user) {
+        const res = await fetch("/api/getuserdata");
+        const userData = await res.json();
+        setCustomerDetails({
+          name: userData.user.name,
+          email: userData.user.email,
+          address: userData.user.address,
+        });
+        console.log(userData);
+      }
+    };
+    getUserData();
+  }, [user]);
 
   if (!isLoaded || !userId) {
     return (
@@ -52,27 +68,29 @@ const CheckoutPage: React.FC = () => {
       </div>
     );
   }
-
   const handleCheckout = async (data: any) => {
+    setIsSubmitting(true); // Start showing the spinner
     try {
-      const res = await fetch("/api/orders", {
+      const res = await fetch("/api/userorders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          customerDetails: data,
-          cart: products,
-          total: totalPrice,
+          id: userId,
+          orderId: uniqueId,
+          userEmail: customerDetails.email,
+          userAddress: customerDetails.address,
+          products: products,
+          price: totalPrice,
+          status: "Atesa pagamento",
         }),
       });
 
       if (res.ok) {
-        const response = await res.json();
-        alert("Order placed successfully!");
-        if (isMounted) {
-          router.push("/order-confirmation");
-        }
+        // const response = await res.json();
+        // alert("Order placed successfully!");
+        router.push(`/order-confirmation/${uniqueId}`);
       } else {
         const errorData = await res.json();
         alert(`Error placing order: ${errorData.message}`);
@@ -80,6 +98,8 @@ const CheckoutPage: React.FC = () => {
     } catch (error) {
       console.error("Error placing order:", error);
       alert("An error occurred while placing the order.");
+    } finally {
+      setIsSubmitting(false); // Stop showing the spinner
     }
   };
 
@@ -102,15 +122,18 @@ const CheckoutPage: React.FC = () => {
             control={methods.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <input
                     type="text"
                     {...field}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    value={customerDetails.name}
                   />
                 </FormControl>
-                <FormDescription>Inserisci il tuo nome.</FormDescription>
+                <FormDescription>
+                  Conferma che questo è il tuo nome.
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -127,9 +150,12 @@ const CheckoutPage: React.FC = () => {
                     type="email"
                     {...field}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    value={customerDetails.email}
                   />
                 </FormControl>
-                <FormDescription>Inserisci la tua email.</FormDescription>
+                <FormDescription>
+                  Conferma il tuo indirizzo email.
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -140,15 +166,16 @@ const CheckoutPage: React.FC = () => {
             control={methods.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Indirizzo</FormLabel>
+                <FormLabel>Indirizzo di consegna</FormLabel>
                 <FormControl>
                   <textarea
                     {...field}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    value={customerDetails.address}
                   />
                 </FormControl>
                 <FormDescription>
-                  Inserisci il tuo indirizzo di spedizione.
+                  Se necessario, puoi aggiornare il tuo indirizzo di spedizione.
                 </FormDescription>
               </FormItem>
             )}
@@ -156,7 +183,9 @@ const CheckoutPage: React.FC = () => {
 
           {/* Order Summary */}
           <div className="mt-6">
-            <h2 className="text-xl font-bold mb-4">Riepilogo Ordine</h2>
+            <h2 className="text-xl font-bold mb-4">
+              Riepilogo dell&lsquo;ordine
+            </h2>
             <ul>
               {products.map((item) => (
                 <li key={item.id} className="flex justify-between py-2">
@@ -167,7 +196,7 @@ const CheckoutPage: React.FC = () => {
               ))}
             </ul>
             <h3 className="text-lg font-bold mt-4">
-              Totale: €{totalPrice.toFixed(2)}
+              Totale: € {totalPrice.toFixed(2)}
             </h3>
           </div>
 
@@ -175,8 +204,13 @@ const CheckoutPage: React.FC = () => {
           <Button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4"
+            disabled={isSubmitting} // Disable button while submitting
           >
-            Completa Ordine
+            {isSubmitting ? (
+              <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
+            ) : (
+              "Completa Ordine"
+            )}
           </Button>
         </form>
       </FormProvider>
