@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { useCartStore } from "@/lib/store"; // Adjust import path as needed
 import { Button } from "@/components/ui/button"; // Adjust import path as needed
-
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import {
   Form,
   FormField,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 
 const CheckoutPage: React.FC = () => {
+  const { isLoaded, userId, sessionId, getToken } = useAuth();
   const { products, totalPrice } = useCartStore();
   const [customerDetails, setCustomerDetails] = useState({
     name: "",
@@ -36,6 +37,21 @@ const CheckoutPage: React.FC = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  if (!isLoaded || !userId) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-white font-extrabold text-3xl m-3 md:m-10 text-center">
+          Ciao! Accedi per ordinare!
+        </h1>
+        <div className="bg-yellow-100 rounded-sm">
+          <SignInButton>
+            <button className="text-red-500 mx-4">Accedi</button>
+          </SignInButton>
+        </div>
+      </div>
+    );
+  }
 
   const handleCheckout = async (data: any) => {
     try {
@@ -72,7 +88,7 @@ const CheckoutPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="min-h-screen flex items-start justify-center bg-gray-100 p-6">
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(handleCheckout)}

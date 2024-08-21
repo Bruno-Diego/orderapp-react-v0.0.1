@@ -19,11 +19,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { Skeleton } from "@/components/ui/skeleton";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 
 interface Product {
   id: string;
@@ -42,8 +61,8 @@ interface Cart {
 const CartDrawer = () => {
   // Ottieni lo stato del carrello dallo store
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore();
-
-  const router = useRouter()
+  const { user } = useUser();
+  const router = useRouter();
   // UseState para controlar a reidratação
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -67,9 +86,26 @@ const CartDrawer = () => {
     removeFromCart(product); // Regola la quantità secondo necessità
   };
   console.log("Products: " + products);
+  // funzione per andare al checkout
   const handleCheckout = () => {
+    console.log(user);
+    if (user === null) {
+      <AlertDialog>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Accedi per ordinare!</AlertDialogTitle>
+            <AlertDialogAction>
+              <div className="bg-yellow-100 px-1 my-1 cursor-pointer rounded-md">
+                <SignInButton />
+              </div>
+            </AlertDialogAction>
+          </AlertDialogHeader>
+        </AlertDialogContent>
+      </AlertDialog>;
+    }
     router.push("/checkout");
   };
+
   return (
     <Drawer>
       <DrawerTrigger>Apri Carrello ({totalItems})</DrawerTrigger>
@@ -146,11 +182,11 @@ const CartDrawer = () => {
           <DrawerClose className="absolute top-0 right-0 m-2">
             <Button variant="outline">X</Button>
           </DrawerClose>
-          <div className="">
-            <Button variant="outline" onClick={handleCheckout}>
-              Vai al pagamento
-            </Button>
-          </div>
+          <DrawerClose>
+              <Button variant="outline" onClick={handleCheckout}>
+                Vai al pagamento
+              </Button>
+          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
