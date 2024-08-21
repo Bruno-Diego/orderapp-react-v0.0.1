@@ -25,7 +25,7 @@ model User {
   isAdmin       Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  Order         Order?
+  Order         Order[]
   sessions      Session[]
 }
 
@@ -68,6 +68,6 @@ model Order {
   products  Json[]
   status    String
   intent_id String?  @unique
+  user      User     @relation(fields: [userEmail], references: [email])
   userEmail String
-  user      User     @relation(fields: [id], references: [clerkUserId])
 }

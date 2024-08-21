@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: string;
@@ -32,21 +33,28 @@ interface Product {
   quantity: number;
 }
 
+interface Cart {
+  products: Product[];
+  totalItems: number;
+  totalPrice: number;
+}
+
 const CartDrawer = () => {
   // Ottieni lo stato del carrello dallo store
   const { products, totalItems, totalPrice, removeFromCart } = useCartStore();
 
-    // UseState para controlar a reidratação
-    const [isHydrated, setIsHydrated] = useState(false);
+  const router = useRouter()
+  // UseState para controlar a reidratação
+  const [isHydrated, setIsHydrated] = useState(false);
 
-    // Verifica se o Zustand foi reidratado
-    useEffect(() => {
-      setIsHydrated(true);
-    }, []);
-  
-    if (!isHydrated) {
-      return <p>Loading...</p>; // Ou qualquer outra UI enquanto o Zustand hidrata
-    }
+  // Verifica se o Zustand foi reidratado
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  if (!isHydrated) {
+    return <p>Loading...</p>; // Ou qualquer outra UI enquanto o Zustand hidrata
+  }
 
   // Funzione per garantire che `totalPrice` e `product.price` siano numeri
   const formatPrice = (price: string | number) => {
@@ -58,7 +66,10 @@ const CartDrawer = () => {
   const handleRemove = (product: Product) => {
     removeFromCart(product); // Regola la quantità secondo necessità
   };
-  console.log("Products: " + products)
+  console.log("Products: " + products);
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
   return (
     <Drawer>
       <DrawerTrigger>Apri Carrello ({totalItems})</DrawerTrigger>
@@ -92,7 +103,7 @@ const CartDrawer = () => {
                               src={product.img}
                               width={500}
                               height={500}
-                              alt="Margherita Pizza"
+                              alt={product.name}
                               className="rounded-full md:w-24 md:h-24 w-12 h-12 object-cover"
                             />
                           ) : (
@@ -110,7 +121,7 @@ const CartDrawer = () => {
                           </div>
                           <div>
                             <p className="text-xl font-bold my-2 text-center">
-                              € {product.price}
+                              € {formatPrice(product.price)}
                             </p>
                           </div>
                         </div>
@@ -125,13 +136,6 @@ const CartDrawer = () => {
                       <BsTrash className="h-5 w-5" />
                     </Button>
                   </Card>
-                  {/* <div>
-                    <span>{product.name}</span>
-                    <span className="ml-2">Quantità: {product.quantity}</span>
-                    <span className="ml-2">
-                      Prezzo: €{formatPrice(product.price)}
-                    </span>
-                  </div> */}
                 </li>
               ))}
             </ul>
@@ -143,7 +147,9 @@ const CartDrawer = () => {
             <Button variant="outline">X</Button>
           </DrawerClose>
           <div className="">
-            <Button variant="outline">Vai al pagamento</Button>
+            <Button variant="outline" onClick={handleCheckout}>
+              Vai al pagamento
+            </Button>
           </div>
         </DrawerFooter>
       </DrawerContent>
