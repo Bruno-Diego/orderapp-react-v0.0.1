@@ -85,7 +85,7 @@ const CartDrawer = () => {
   const handleRemove = (product: Product) => {
     removeFromCart(product); // Regola la quantità secondo necessità
   };
-  console.log("Products: " + products);
+  // console.log("Products: " + products);
   // funzione per andare al checkout
   const handleCheckout = () => {
     router.push("/checkout");

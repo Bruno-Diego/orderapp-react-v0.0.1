@@ -27,7 +27,7 @@ const CategoryPage = ({ params }: Props) => {
     const fetchProducts = async (category: string) => {
       const response = await fetch(`/api/products?catSlug=${category}`);
       const data = await response.json();
-      console.log(response);
+      // console.log(response);
       setProducts(data);
     };
 

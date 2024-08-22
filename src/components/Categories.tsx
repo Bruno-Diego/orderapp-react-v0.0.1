@@ -25,9 +25,9 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch('/api/categories')
-      console.log("response:" + response)
+      // console.log("response:" + response)
       const data = await response.json()
-      console.log("data:" + data)
+      // console.log("data:" + data)
       setCategories(data)
     }
 
