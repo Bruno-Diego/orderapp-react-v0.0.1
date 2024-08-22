@@ -14,14 +14,14 @@ const OrderConfirmation = ({ params }: { params: { id: string } }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100 p-6">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md text-center">
-        <h1 className="text-2xl font-bold mb-6">Order Confirmed</h1>
-        <p className="text-lg mb-4">Thank you for your purchase!</p>
+        <h1 className="text-2xl font-bold mb-6">Ordine confermato</h1>
+        <p className="text-lg mb-4">Grazie per il tuo acquisto!</p>
         <div className="flex items-center justify-center">
           <GiConfirmed className="w-20 h-20" />
         </div>
         <p className="text-gray-600 mb-6">
-          Your order #{params.id} has been placed successfully. You will receive
-          a confirmation email shortly.
+        Il tuo ordine #{params.id} è stato effettuato con successo. Riceverai
+        una email di conferma a breve.
         </p>
         <Button
           onClick={handleContinueShopping}

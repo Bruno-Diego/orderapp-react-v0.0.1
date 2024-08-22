@@ -19,7 +19,7 @@ import { ClipLoader } from "react-spinners";
 
 const CheckoutPage: React.FC = () => {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
-  const { products, totalPrice } = useCartStore();
+  const { products, totalPrice, resetCart } = useCartStore();
   const [customerDetails, setCustomerDetails] = useState({
     name: "",
     email: "",
@@ -100,6 +100,7 @@ const CheckoutPage: React.FC = () => {
       alert("An error occurred while placing the order.");
     } finally {
       setIsSubmitting(false); // Stop showing the spinner
+      resetCart()
     }
   };
 

@@ -14,9 +14,9 @@ export const PUT = async (
 
     await prisma.order.update({
       where: {
-        id: id,
+        orderId: id,
       },
-      data: { status: body },
+      data: body,
     });
     return new NextResponse(
       JSON.stringify({ message: "Order has been updated!" }),

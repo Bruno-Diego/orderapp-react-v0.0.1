@@ -9,6 +9,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 
 interface Order {
   id: string;
+  orderId: string;
   createdAt: Date;
   price: Decimal;
   products: { id: string; name: string; quantity: number; price: number }[];
@@ -43,11 +44,11 @@ const OrderListPage = () => {
       try {
         if (user && typeof isAdmin === "boolean") {
           // Ensure isAdmin has been set
-          console.log(user)
           const endpoint = isAdmin ? "/api/adminorders" : `/api/userorders/${user.primaryEmailAddress?.emailAddress}`;
           console.log(`Getting orders list for ${isAdmin ? "admin" : "users"}`);
           const response = await fetch(endpoint);
           const orderData: Order[] = await response.json();
+          console.log(orderData)
           setOrders(orderData);
         }
       } catch (error) {
@@ -58,7 +59,7 @@ const OrderListPage = () => {
     fetchOrders();
   }, [isAdmin, user]);
 
-  const handleStatusChange = async (orderId, newStatus) => {
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
       const res = await fetch(`/api/adminorders/${orderId}`, {
         method: "PUT",
@@ -72,7 +73,7 @@ const OrderListPage = () => {
         const updatedOrder = await res.json();
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
-            order.id === updatedOrder.id ? updatedOrder : order
+            order.orderId === orderId ? { ...order, status: newStatus } : order
           )
         );
       } else {
@@ -90,30 +91,30 @@ const OrderListPage = () => {
       <table className="min-w-full bg-white rounded-lg shadow-md">
       <thead>
         <tr>
-          <th className="py-3 px-6 text-left">Order ID</th>
-          <th className="py-3 px-6 text-left">Date</th>
-          <th className="py-3 px-6 text-left">Customer</th>
-          <th className="py-3 px-6 text-left">Total Price</th>
-          <th className="py-3 px-6 text-left">Status</th>
-          {isAdmin && <th className="py-3 px-6 text-center">Actions</th>}
+          <th className="py-3 px-6 text-left">Ordine ID</th>
+          <th className="py-3 px-6 text-left">Data</th>
+          <th className="py-3 px-6 text-left">Email</th>
+          <th className="py-3 px-6 text-left">Totale</th>
+          <th className="py-3 px-6 text-left">Stato</th>
+          {isAdmin && <th className="py-3 px-6 text-center">Cambia stato</th>}
         </tr>
       </thead>
       <tbody>
         {orders.map((order) => (
           <tr key={order.id}>
-            <td className="py-4 px-6">{order.id}</td>
+            <td className="py-4 px-6">{order.orderId}</td>
             <td className="py-4 px-6">
               {new Date(order.createdAt).toLocaleDateString()}
             </td>
             <td className="py-4 px-6">{order.userEmail}</td>
-            <td className="py-4 px-6">€{order.price.toFixed(2)}</td>
+            <td className="py-4 px-6">€{Number(order.price).toFixed(2)}</td>
             <td className="py-4 px-6">{order.status}</td>
             {isAdmin && (
               <td className="py-4 px-6 text-center">
                 <select
                   value={order.status}
                   onChange={(e) =>
-                    handleStatusChange(order.id, e.target.value)
+                    handleStatusChange(order.orderId, e.target.value)
                   }
                   className="bg-gray-200 p-2 rounded-lg"
                 >
