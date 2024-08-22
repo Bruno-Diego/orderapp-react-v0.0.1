@@ -101,7 +101,7 @@ const OrderListPage = () => {
       </thead>
       <tbody>
         {orders.map((order) => (
-          <tr key={order.id}>
+          <tr key={order.orderId}>
             <td className="py-4 px-6">{order.orderId}</td>
             <td className="py-4 px-6">
               {new Date(order.createdAt).toLocaleDateString()}

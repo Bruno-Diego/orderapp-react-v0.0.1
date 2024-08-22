@@ -48,12 +48,11 @@ const CheckoutPage: React.FC = () => {
           email: userData.user.email,
           address: userData.user.address,
         });
-        console.log(userData);
       }
     };
     getUserData();
   }, [user]);
-
+  
   if (!isLoaded || !userId) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -71,13 +70,14 @@ const CheckoutPage: React.FC = () => {
   const handleCheckout = async (data: any) => {
     setIsSubmitting(true); // Start showing the spinner
     try {
+      // console.log(userData);
       const res = await fetch("/api/userorders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: userId,
+          userId: userId,
           orderId: uniqueId,
           userEmail: customerDetails.email,
           userAddress: customerDetails.address,
@@ -86,11 +86,11 @@ const CheckoutPage: React.FC = () => {
           status: "Atesa pagamento",
         }),
       });
-
+      
       if (res.ok) {
         // const response = await res.json();
         // alert("Order placed successfully!");
-        router.push(`/order-confirmation/${uniqueId}`);
+        router.push(`/pagamento/${uniqueId}`);
       } else {
         const errorData = await res.json();
         alert(`Error placing order: ${errorData.message}`);
@@ -217,7 +217,7 @@ const CheckoutPage: React.FC = () => {
               {isSubmitting ? (
                 <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
               ) : (
-                "Completa Ordine"
+                "Conferma Ordine e Paga"
               )}
             </Button>
           </form>
