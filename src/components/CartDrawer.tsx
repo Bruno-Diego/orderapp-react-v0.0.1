@@ -103,7 +103,7 @@ const CartDrawer = () => {
         </DrawerHeader>
         <div className="drawer-body px-4">
           {totalItems === 0 ? (
-            <p className="text-white">Il tuo carrello è vuoto.</p>
+            <p className="text-white pb-5">Il tuo carrello è vuoto.</p>
           ) : (
             <ul className="text-white px-4 md:flex">
               {products.map((product) => (
@@ -162,7 +162,7 @@ const CartDrawer = () => {
             </ul>
           )}
         </div>
-        <DrawerFooter className="text-white text-center">
+        <DrawerFooter className={`text-white text-center ${totalItems === 0 ? `hidden` : `flex`}`}>
           <span>Prezzo Totale: €{formatPrice(totalPrice)}</span>
           <DrawerClose className="absolute top-0 right-0 m-2">
             <Button variant="outline">X</Button>

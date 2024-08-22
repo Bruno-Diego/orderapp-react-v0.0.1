@@ -100,7 +100,7 @@ const CheckoutPage: React.FC = () => {
       alert("An error occurred while placing the order.");
     } finally {
       setIsSubmitting(false); // Stop showing the spinner
-      resetCart()
+      resetCart();
     }
   };
 
@@ -110,111 +110,119 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-start justify-center bg-gray-100 p-6">
-      <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(handleCheckout)}
-          className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md"
-        >
-          <h1 className="text-2xl font-bold mb-6">Checkout</h1>
-
-          {/* Customer Name */}
-          <FormField
-            name="name"
-            control={methods.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <input
-                    type="text"
-                    {...field}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    value={customerDetails.name}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Conferma che questo è il tuo nome.
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-
-          {/* Customer Email */}
-          <FormField
-            name="email"
-            control={methods.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <input
-                    type="email"
-                    {...field}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    value={customerDetails.email}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Conferma il tuo indirizzo email.
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-
-          {/* Customer Address */}
-          <FormField
-            name="address"
-            control={methods.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Indirizzo di consegna</FormLabel>
-                <FormControl>
-                  <textarea
-                    {...field}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    value={customerDetails.address}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Se necessario, puoi aggiornare il tuo indirizzo di spedizione.
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-
-          {/* Order Summary */}
-          <div className="mt-6">
-            <h2 className="text-xl font-bold mb-4">
-              Riepilogo dell&lsquo;ordine
-            </h2>
-            <ul>
-              {products.map((item) => (
-                <li key={item.id} className="flex justify-between py-2">
-                  <span>
-                    {item.name} - {item.quantity} x €{item.price.toFixed(2)}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <h3 className="text-lg font-bold mt-4">
-              Totale: € {totalPrice.toFixed(2)}
-            </h3>
-          </div>
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4"
-            disabled={isSubmitting} // Disable button while submitting
+      {totalPrice === 0 ? (
+        <div className="text-center text-2xl font-bold mb-6">
+          <p>Il tuo carrello è vuoto.</p>
+          <p>Aggiungi prodotti al tuo ordine.</p>
+        </div>
+      ) : (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(handleCheckout)}
+            className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md"
           >
-            {isSubmitting ? (
-              <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
-            ) : (
-              "Completa Ordine"
-            )}
-          </Button>
-        </form>
-      </FormProvider>
+            <h1 className="text-2xl font-bold mb-6">Checkout</h1>
+
+            {/* Customer Name */}
+            <FormField
+              name="name"
+              control={methods.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <input
+                      type="text"
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      value={customerDetails.name}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Conferma che questo è il tuo nome.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+
+            {/* Customer Email */}
+            <FormField
+              name="email"
+              control={methods.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <input
+                      type="email"
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      value={customerDetails.email}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Conferma il tuo indirizzo email.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+
+            {/* Customer Address */}
+            <FormField
+              name="address"
+              control={methods.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Indirizzo di consegna</FormLabel>
+                  <FormControl>
+                    <textarea
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      value={customerDetails.address}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Se necessario, puoi aggiornare il tuo indirizzo di
+                    spedizione.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+
+            {/* Order Summary */}
+            <div className="mt-6">
+              <h2 className="text-xl font-bold mb-4">
+                Riepilogo dell&lsquo;ordine
+              </h2>
+              <ul>
+                {products.map((item) => (
+                  <li key={item.id} className="flex justify-between py-2">
+                    <span>
+                      {item.name} - {item.quantity} x €{item.price.toFixed(2)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <h3 className="text-lg font-bold mt-4">
+                Totale: € {totalPrice.toFixed(2)}
+              </h3>
+            </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4"
+              disabled={isSubmitting} // Disable button while submitting
+            >
+              {isSubmitting ? (
+                <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
+              ) : (
+                "Completa Ordine"
+              )}
+            </Button>
+          </form>
+        </FormProvider>
+      )}
     </div>
   );
 };
