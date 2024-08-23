@@ -47,7 +47,7 @@ const Navbar = () => {
         <Link href="/menu">Menu</Link>
         <Link href="/contact">Contatto</Link>
         {/* Admin Button */}
-        {isAdmin && (
+        {isAdmin && user && (
           <div>
             <Button variant="outline" className="mx-1">
               <Link className="text-red-500" href="/add">
@@ -81,7 +81,7 @@ const Navbar = () => {
                 <Link href="/contact">Contatto</Link>
               </MenubarItem>
               {/* Admin Buttons */}
-              {isAdmin && (
+              {isAdmin && user && (
                 <div>
                   <MenubarItem>
                     <Button variant="outline">
