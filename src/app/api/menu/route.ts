@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-
+export const dynamic = 'force-dynamic'
 // FETCH ALL PRODUCTS
 export const GET = async () => {
   try {

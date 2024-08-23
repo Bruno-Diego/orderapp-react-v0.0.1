@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db'; // Assuming you're using Prisma
 
+export const dynamic = 'force-dynamic'
 // FETCH FILTERED Products
 export async function GET(req: NextRequest) {
   const catSlug = req.nextUrl.searchParams.get('catSlug'); // Correct way to get query parameters in NextRequest

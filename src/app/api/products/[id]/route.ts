@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db'; // Make sure this path is correct based on your project structure
 
+export const dynamic = 'force-dynamic'
 // Handler to fetch product by ID
 export async function GET(req: NextRequest) {
   // Extract the id from the URL
