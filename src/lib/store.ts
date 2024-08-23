@@ -94,7 +94,11 @@ export const useCartStore = create<CartType & ActionTypes>()(
       },
       
       resetCart: () => {
-        set(INITIAL_STATE);
+        set({
+          products: [],
+          totalItems: 0,
+          totalPrice: 0,
+        });
       },
     }),
     {
