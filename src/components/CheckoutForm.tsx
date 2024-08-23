@@ -43,7 +43,7 @@ const CheckoutForm = ({
     // console.log("Stripe: "+ stripe)
     // console.log("clientsecret: "+ clientSecret)
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      console.log("paymentIntent: " + paymentIntent?.status);
+      // console.log("paymentIntent: " + paymentIntent?.status);
       switch (paymentIntent?.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
@@ -72,6 +72,7 @@ const CheckoutForm = ({
 
     setIsLoading(true);
     // console.log(isLoading)
+
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -86,6 +87,7 @@ const CheckoutForm = ({
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
     if (error) {
+      console.log(error)
       if (error.type === "card_error" || error.type === "validation_error") {
         setMessage(error.message || "Something went wrong!");
       } else {
@@ -94,6 +96,7 @@ const CheckoutForm = ({
       setIsLoading(false);
     } else {
       // Reset the cart only if the payment was successful
+      console.log("Reseting cart")
       resetCart();
       setIsLoading(false);
     }
