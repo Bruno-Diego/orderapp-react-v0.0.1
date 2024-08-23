@@ -3,13 +3,34 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"; // Adjust the import path as needed
 import Link from "next/link";
 import { GiConfirmed } from "react-icons/gi";
+import { useEffect } from "react";
 
-const OrderConfirmation = ({ params }: { params: { id: string } }) => {
+const OrderConfirmation = ({ params }: { params: { orderId: string } }) => {
   const router = useRouter();
+  const { orderId } = params;
   const handleContinueShopping = () => {
     // Redirect to the homepage or a shopping page
     router.push("/");
   };
+
+  
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        await fetch(`/api/confirm/${orderId}`, {
+          method: "PUT",
+        });
+        setTimeout(() => {
+          router.push("/orders");
+        }, 5000);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    makeRequest();
+  }, [router, orderId]);
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100 p-6">
@@ -20,7 +41,7 @@ const OrderConfirmation = ({ params }: { params: { id: string } }) => {
           <GiConfirmed className="w-20 h-20" />
         </div>
         <p className="text-gray-600 mb-6">
-        Il tuo ordine #{params.id} è stato effettuato con successo. Riceverai
+        Il tuo ordine #{orderId} è stato effettuato con successo. Riceverai
         una email di conferma a breve.
         </p>
         <Button

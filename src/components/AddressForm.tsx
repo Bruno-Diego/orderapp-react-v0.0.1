@@ -3,7 +3,7 @@ import React from "react";
 
 const AddressForm = () => {
   return (
-    <form>
+    <div>
       <h3>Address</h3>
       <AddressElement
         options={{ mode: "shipping" }}
@@ -13,7 +13,7 @@ const AddressForm = () => {
           }
         }}
       />
-    </form>
+    </div>
   );
 };
 

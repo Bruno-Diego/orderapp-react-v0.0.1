@@ -164,10 +164,11 @@ const CartDrawer = () => {
         </div>
         <DrawerFooter className={`text-white text-center ${totalItems === 0 ? `hidden` : `flex`}`}>
           <span>Prezzo Totale: €{formatPrice(totalPrice)}</span>
-          <DrawerClose className="absolute top-0 right-0 m-2">
+          {/* "asChild" is used to avoid a button inside a button  */}
+          <DrawerClose asChild className="absolute top-0 right-0 m-2">
             <Button variant="outline">X</Button>
           </DrawerClose>
-          <DrawerClose>
+          <DrawerClose asChild>
               <Button variant="outline" onClick={handleCheckout}>
                 Vai al pagamento
               </Button>

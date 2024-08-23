@@ -8,14 +8,25 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import AddressForm from "./AddressForm";
+import { ClipLoader } from "react-spinners";
 
-const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret: string; }) => {
+import { useCartStore } from "@/lib/store";
+
+const CheckoutForm = ({
+  orderId,
+  clientSecret,
+}: {
+  orderId: string;
+  clientSecret: string;
+}) => {
   const stripe = useStripe();
   const elements = useElements();
 
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { resetCart } = useCartStore();
 
   useEffect(() => {
     if (!stripe) {
@@ -32,7 +43,7 @@ const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret
     // console.log("Stripe: "+ stripe)
     // console.log("clientsecret: "+ clientSecret)
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      console.log("paymentIntent: "+ paymentIntent?.status)
+      console.log("paymentIntent: " + paymentIntent?.status);
       switch (paymentIntent?.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
@@ -41,7 +52,7 @@ const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret
           setMessage("Your payment is processing.");
           break;
         case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
+          setMessage("Please provide a payment method.");
           break;
         default:
           setMessage("Something went wrong.");
@@ -60,12 +71,12 @@ const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret
     }
 
     setIsLoading(true);
-
+    // console.log(isLoading)
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `/order-confirmation/${orderId}`,
+        return_url: `${process.env.NEXT_PUBLIC_STRIPE_BASE_URL}/order-confirmation/${orderId}`,
       },
     });
 
@@ -74,13 +85,18 @@ const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message || "Something went wrong!");
+    if (error) {
+      if (error.type === "card_error" || error.type === "validation_error") {
+        setMessage(error.message || "Something went wrong!");
+      } else {
+        setMessage("An unexpected error occurred.");
+      }
+      setIsLoading(false);
     } else {
-      setMessage("An unexpected error occurred.");
+      // Reset the cart only if the payment was successful
+      resetCart();
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -97,9 +113,17 @@ const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret
         }}
       />
       <AddressForm />
-      <button disabled={isLoading || !stripe || !elements} id="submit" className="bg-red-500 text-white p-4 rounded-md w-28">
+      <button
+        disabled={isLoading}
+        id="submit"
+        className="bg-red-500 text-white p-4 rounded-md w-28"
+      >
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Paga"}
+          {isLoading ? (
+            <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
+          ) : (
+            "Paga"
+          )}
         </span>
       </button>
       {/* Show any error or success messages */}

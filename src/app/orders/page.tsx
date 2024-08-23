@@ -45,10 +45,10 @@ const OrderListPage = () => {
         if (user && typeof isAdmin === "boolean") {
           // Ensure isAdmin has been set
           const endpoint = isAdmin ? "/api/adminorders" : `/api/userorders/${user.primaryEmailAddress?.emailAddress}`;
-          console.log(`Getting orders list for ${isAdmin ? "admin" : "users"}`);
+          // console.log(`Getting orders list for ${isAdmin ? "admin" : "users"}`);
           const response = await fetch(endpoint);
           const orderData: Order[] = await response.json();
-          console.log(orderData)
+          // console.log(orderData)
           setOrders(orderData);
         }
       } catch (error) {
@@ -109,7 +109,7 @@ const OrderListPage = () => {
             <td className="py-4 px-6">{order.userEmail}</td>
             <td className="py-4 px-6">€{Number(order.price).toFixed(2)}</td>
             <td className="py-4 px-6">{order.status}</td>
-            {isAdmin && (
+            {isAdmin && order.status !== "Atesa pagamento" && order.status !== "Completato" && (
               <td className="py-4 px-6 text-center">
                 <select
                   value={order.status}
@@ -118,13 +118,13 @@ const OrderListPage = () => {
                   }
                   className="bg-gray-200 p-2 rounded-lg"
                 >
-                  <option value="Atesa pagamento">Atesa pagamento</option>
-                  <option value="ricevuto">ricevuto</option>
-                  <option value="in cucina">in cucina</option>
-                  <option value="preparato">preparato</option>
-                  <option value="in consegna">in consegna</option>
-                  <option value="consegnato">consegnato</option>
-                  <option value="completato">completato</option>
+                  <option value="">Cambia stato</option>
+                  <option value="Ricevuto">ricevuto</option>
+                  <option value="In cucina!">in cucina</option>
+                  <option value="Preparato!">preparato</option>
+                  <option value="In consegna">in consegna</option>
+                  <option value="Consegnato">consegnato</option>
+                  <option value="Completato">completato</option>
                 </select>
               </td>
             )}

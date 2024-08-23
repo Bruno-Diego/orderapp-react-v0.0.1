@@ -100,7 +100,7 @@ const CheckoutPage: React.FC = () => {
       alert("An error occurred while placing the order.");
     } finally {
       setIsSubmitting(false); // Stop showing the spinner
-      resetCart();
+      // resetCart();
     }
   };
 
