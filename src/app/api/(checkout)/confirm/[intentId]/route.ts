@@ -1,4 +1,4 @@
-import { prisma } from "@/utils/connect";
+import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export const PUT = async ({ params }: { params: { intentId: string } }) => {
@@ -9,7 +9,7 @@ export const PUT = async ({ params }: { params: { intentId: string } }) => {
       where: {
         intent_id: intentId,
       },
-      data: { status: "Being prepared!" },
+      data: { status: "In Cucina!" },
     });
     return new NextResponse(
       JSON.stringify({ message: "Order has been updated" }),

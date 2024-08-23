@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import AddressForm from "./AddressForm";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ orderId, clientSecret }: { orderId: string, clientSecret: string; }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -22,15 +22,17 @@ const CheckoutForm = () => {
       return;
     }
 
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
+    // const clientSecret = new URLSearchParams(window.location.search).get(
+    //   "payment_intent_client_secret"
+    // );
 
     if (!clientSecret) {
       return;
     }
-
+    // console.log("Stripe: "+ stripe)
+    // console.log("clientsecret: "+ clientSecret)
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      console.log("paymentIntent: "+ paymentIntent?.status)
       switch (paymentIntent?.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
@@ -46,7 +48,7 @@ const CheckoutForm = () => {
           break;
       }
     });
-  }, [stripe]);
+  }, [stripe, clientSecret]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,7 +65,7 @@ const CheckoutForm = () => {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/success",
+        return_url: `/order-confirmation/${orderId}`,
       },
     });
 
@@ -85,7 +87,7 @@ const CheckoutForm = () => {
     <form
       id="payment-form"
       onSubmit={handleSubmit}
-      className="min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-15rem)] p-4 lg:px-20 xl:px-40 flex flex-col gap-8"
+      className="text-white min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-15rem)] p-4 lg:px-20 xl:px-40 flex flex-col gap-8"
     >
       <LinkAuthenticationElement id="link-authentication-element" />
       <PaymentElement
@@ -97,7 +99,7 @@ const CheckoutForm = () => {
       <AddressForm />
       <button disabled={isLoading || !stripe || !elements} id="submit" className="bg-red-500 text-white p-4 rounded-md w-28">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? <div className="spinner" id="spinner"></div> : "Paga"}
         </span>
       </button>
       {/* Show any error or success messages */}
