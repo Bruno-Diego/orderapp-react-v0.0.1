@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import { getOrderList, updateOrderStatus } from "@/lib/orders"; // Funções para buscar pedidos e atualizar status
 import { Decimal } from "@prisma/client/runtime/library";
 
 interface Order {
