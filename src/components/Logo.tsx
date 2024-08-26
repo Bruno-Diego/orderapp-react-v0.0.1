@@ -1,5 +1,5 @@
 import Image from "next/image";
-import starTurkishLogo from "../../public/Star_Turkish_Logo_0.1.png"
+import starTurkishLogo from "../../public/star_turchis_logo.png"
 import React from "react";
 
 const Logo = () => {
