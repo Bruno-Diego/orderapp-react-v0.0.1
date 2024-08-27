@@ -141,7 +141,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
         </Link>
         <CardContent>
           <div className="text-right">
-            <div className="md:flex items-center space-x-2">
+            <div className="items-center space-x-2">
               <div className="flex items-center space-x-2 justify-center">
                 <Button size="icon" onClick={decreaseQuantity}>
                   <BsDashLg className="h-4 w-4" />
@@ -157,7 +157,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
               </div>
               {/* Admin Button */}
               {isAdmin && (
-                <div className="md:w-1/3 flex justify-center">
+                <div className="flex justify-center">
                   <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
                     <BsPencilSquare className="h-6 w-6" />
                   </Button>

@@ -144,7 +144,7 @@ const AddProductPage = () => {
             control={methods.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome del prodotto</FormLabel>
+                <FormLabel>Nome prodotto</FormLabel>
                 <FormControl>
                   <input
                     type="text"
