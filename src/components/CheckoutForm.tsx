@@ -26,7 +26,7 @@ const CheckoutForm = ({
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { resetCart } = useCartStore();
+  const { products, totalPrice, resetCart } = useCartStore();
 
   useEffect(() => {
     if (!stripe) {
@@ -96,11 +96,10 @@ const CheckoutForm = ({
       setIsLoading(false);
     } else {
       // Reset the cart only if the payment was successful
-      console.log("Reseting cart")
-      resetCart();
       setIsLoading(false);
     }
   };
+
 
   return (
     <form

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"; // Adjust the import path as ne
 import Link from "next/link";
 import { GiConfirmed } from "react-icons/gi";
 import { useEffect } from "react";
+import { useCartStore } from "@/lib/store";
 
 const OrderConfirmation = ({ params }: { params: { orderId: string } }) => {
   const router = useRouter();
@@ -12,8 +13,8 @@ const OrderConfirmation = ({ params }: { params: { orderId: string } }) => {
     // Redirect to the homepage or a shopping page
     router.push("/");
   };
+  const { products, totalPrice, resetCart } = useCartStore();
 
-  
   useEffect(() => {
     const makeRequest = async () => {
       try {
@@ -27,10 +28,10 @@ const OrderConfirmation = ({ params }: { params: { orderId: string } }) => {
         console.log(err);
       }
     };
-
+    
+    resetCart()
     makeRequest();
-  }, [router, orderId]);
-
+  }, [router, orderId, resetCart]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100 p-6">
