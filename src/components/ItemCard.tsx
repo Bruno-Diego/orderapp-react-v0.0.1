@@ -109,7 +109,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   }
 
   return (
-    <div className="md:w-full m-4" key={id}>
+    <div className="md:w-full" key={id}>
       <Card className="max-w-lg mt-4 shadow-lg rounded-lg md:p-4">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
@@ -133,7 +133,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                   {desc}
                 </CardDescription>
               </div>
-              <div>
+              <div className="flex items-center">
                 <p className="text-xl font-bold my-2 text-center">€{price}</p>
               </div>
             </div>
