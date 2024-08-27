@@ -5,7 +5,16 @@ export const dynamic = 'force-dynamic'
 // FETCH ALL ORDERS
 export const GET = async (req: NextRequest) => {
     try {
-      const orders = await prisma.order.findMany();
+      const orders = await prisma.order.findMany({
+        where: {
+          status: {
+            not: "Completato",
+          },
+        },
+        orderBy: {
+          createdAt: 'desc', // Optional: Order by creation date
+        },
+      });
       return new NextResponse(JSON.stringify(orders), { status: 200 });
     } catch (err) {
       console.log(err);
