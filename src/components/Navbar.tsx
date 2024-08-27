@@ -42,10 +42,12 @@ const Navbar = () => {
   return (
     <div className="text-red-500 p-4 flex items-center justify-between border-b-2 border-b-red-500 uppercase lg:px-20 xl:px-40">
       {/* LEFT LINKS */}
-      <div className="hidden md:flex gap-4">
-        <Link href="/">Homepage</Link>
-        <Link href="/menu">Menu</Link>
-        <Link href="/contact">Contatto</Link>
+      <div className="hidden md:block gap-4">
+        <div className="md:flex gap-4 items-center">
+          <Link href="/">Homepage</Link>
+          <Link href="/menu">Menu</Link>
+          <Link href="/contact">Contatto</Link>
+        </div>
         {/* Admin Button */}
         {isAdmin && user && (
           <div>
@@ -82,7 +84,7 @@ const Navbar = () => {
               </MenubarItem>
               {/* Admin Buttons */}
               {isAdmin && user && (
-                <div>
+                <div className="">
                   <MenubarItem>
                     <Button variant="outline">
                       <Link className="text-red-500" href="/add">
