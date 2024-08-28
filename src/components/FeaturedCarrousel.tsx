@@ -4,13 +4,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 
 import Autoplay from "embla-carousel-autoplay";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import {
   Carousel,
   CarouselContent,
@@ -18,7 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import ItemCard from "./ItemCard";
+import FeaturedCard from "./FeaturedCard";
 
 interface Product {
   id: string;
@@ -67,10 +61,10 @@ const FeaturedCarouselComponent = () => {
         {products.map((product) => (
           <CarouselItem
             key={product.id}
-            className="pl-1 sm:basis-1/2 md:basis-1/3"
+            className="pl-1 sm:basis-1/2"
           >
             <div className="p-1">
-              <ItemCard
+              <FeaturedCard
                 key={product.id}
                 id={product.id}
                 title={product.title}

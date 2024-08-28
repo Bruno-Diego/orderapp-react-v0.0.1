@@ -40,7 +40,7 @@ const MenuPage = () => {
       <h1 className="text-white text-center p-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         Esplora nostri prodotti
       </h1>
-      <div className="flex flex-col items-center md:flex-row">
+      <div className="flex items-center flex-wrap md:w-full">
         {products.map((product) => (
           <ItemCard
             key={product.id}

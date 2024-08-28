@@ -35,7 +35,7 @@ interface Product {
   options?: { title: string; additionalPrice: number }[];
 }
 
-interface ItemCardProps {
+interface FeaturedCardProps {
   id: string;
   title: string;
   price: number|string;
@@ -43,7 +43,7 @@ interface ItemCardProps {
   desc?: string;
 }
 
-const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
+const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
   const [quantity, setQuantity] = useState(1);
   const { user } = useUser(); // Obtém o usuário autenticado
   const [isAdmin, setIsAdmin] = useState(false);
@@ -109,8 +109,8 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   }
 
   return (
-    <div className="md:flex md:flex-grow p-4 md:p-0 md:m-1 md:justify-center" key={id}>
-      <Card className="md:max-w-sm md:w-full mt-4 shadow-lg rounded-lg">
+    <div className="md:w-full p-4 md:p-0 md:m-1" key={id}>
+      <Card className="max-w-lg mt-4 shadow-lg rounded-lg">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
             <div className="md:flex p-0 m-auto">
@@ -129,7 +129,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                 <CardTitle className="text-xl font-bold text-center">
                   {title}
                 </CardTitle>
-                <CardDescription className="text-gray-500 md:mx-auto text-center md:w-2/3 text-wrap">
+                <CardDescription className="text-gray-500 text-center">
                   {desc}
                 </CardDescription>
               </div>
@@ -180,4 +180,4 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   );
 };
 
-export default ItemCard;
+export default FeaturedCard;
