@@ -109,8 +109,8 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   }
 
   return (
-    <div className="md:w-full" key={id}>
-      <Card className="max-w-lg mt-4 shadow-lg rounded-lg md:p-4">
+    <div className="md:w-1/2 p-4 md:p-0 md:m-1" key={id}>
+      <Card className="max-w-lg mt-4 shadow-lg rounded-lg">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
             <div className="md:flex p-0 m-auto">
@@ -134,7 +134,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                 </CardDescription>
               </div>
               <div className="flex items-center">
-                <p className="text-xl font-bold my-2 text-center">€{price}</p>
+                <p className="text-xl font-bold my-2 text-center mx-auto">€{price}</p>
               </div>
             </div>
           </CardHeader>
@@ -158,9 +158,12 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
               {/* Admin Button */}
               {isAdmin && (
                 <div className="flex justify-center">
-                  <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
-                    <BsPencilSquare className="h-6 w-6" />
-                  </Button>
+                  {/* Edit Button */}
+                  <Link href={`/product/${id}/edit`}>
+                    <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
+                      <BsPencilSquare className="h-6 w-6" />
+                    </Button>
+                  </Link>
                   <Button
                     className="text-white bg-red-600 hover:bg-red-700 m-1 font-bold py-2 px-4 rounded-lg"
                     onClick={handleDelete}

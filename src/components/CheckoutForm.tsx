@@ -11,6 +11,7 @@ import AddressForm from "./AddressForm";
 import { ClipLoader } from "react-spinners";
 
 import { useCartStore } from "@/lib/store";
+import { GiPadlock } from "react-icons/gi";
 
 const CheckoutForm = ({
   orderId,
@@ -118,13 +119,16 @@ const CheckoutForm = ({
       <button
         disabled={isLoading}
         id="submit"
-        className="bg-red-500 text-white p-4 rounded-md w-28"
+        className="bg-red-500 text-white p-4 rounded-md w-1/2 mx-auto"
       >
-        <span id="button-text">
+        <span id="button-text" className="flex justify-center">
           {isLoading ? (
             <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
           ) : (
-            "Paga"
+            <div  className="flex text-center items-center gap-1">
+              <GiPadlock />
+              Pagamento Sicuro
+            </div>
           )}
         </span>
       </button>
