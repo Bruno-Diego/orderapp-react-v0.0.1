@@ -119,7 +119,7 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                   src={img}
                   width={500}
                   height={500}
-                  alt="Margherita Pizza"
+                  alt={title}
                   className="rounded-full w-24 h-24 object-cover m-auto"
                 />
               ) : (

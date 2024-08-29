@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { useCartStore } from "@/lib/store"; // Adjust import path as needed
 import { Button } from "@/components/ui/button"; // Adjust import path as needed
 import { useAuth, SignInButton, useUser } from "@clerk/nextjs";
@@ -12,7 +12,6 @@ import {
   FormControl,
   FormDescription,
 } from "@/components/ui/form";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
 import { ClipLoader } from "react-spinners";
@@ -52,7 +51,7 @@ const CheckoutPage: React.FC = () => {
     };
     getUserData();
   }, [user]);
-  
+
   if (!isLoaded || !userId) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -86,7 +85,7 @@ const CheckoutPage: React.FC = () => {
           status: "Atesa pagamento",
         }),
       });
-      
+
       if (res.ok) {
         // const response = await res.json();
         // alert("Order placed successfully!");
@@ -129,7 +128,7 @@ const CheckoutPage: React.FC = () => {
               control={methods.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <input
                       type="text"
@@ -166,9 +165,16 @@ const CheckoutPage: React.FC = () => {
                 </FormItem>
               )}
             />
-
+            <div className="m-1">
+              <h2>
+                <span className="font-bold text-red-500">
+                  In questo momento tutti gli ordini devono essere ritirati allo
+                  balcone.
+                </span>
+              </h2>
+            </div>
             {/* Customer Address */}
-            <FormField
+            {/* <FormField
               name="address"
               control={methods.control}
               render={({ field }) => (
@@ -187,7 +193,7 @@ const CheckoutPage: React.FC = () => {
                   </FormDescription>
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* Order Summary */}
             <div className="mt-6">
@@ -198,10 +204,20 @@ const CheckoutPage: React.FC = () => {
                 {products.map((item) => (
                   <li key={item.id} className="flex justify-between py-2">
                     <span>
-                      {item.name} - {item.quantity} x €{item.price.toFixed(2)}
+                      {item.quantity} x {item.name}
                     </span>
+                    <span>€{item.price.toFixed(2)}</span>
                   </li>
                 ))}
+              </ul>
+              <ul>
+                
+                  <li className="flex justify-between py-2 text-sm">
+                    <span>
+                      Contributo aplicazione
+                    </span>
+                    <span>€2</span>
+                  </li>
               </ul>
               <h3 className="text-lg font-bold mt-4">
                 Totale: € {totalPrice.toFixed(2)}
