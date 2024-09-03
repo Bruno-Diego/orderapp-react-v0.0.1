@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_KEBAPTEST_SECRET_KEY);
 
 export async function POST(
   request: NextRequest,
@@ -25,7 +25,7 @@ export async function POST(
       automatic_payment_methods: {
         enabled: true,
       },
-      application_fee_amount: contribValue * 100, 
+      // application_fee_amount: contribValue * 100, 
     });
 
     await prisma.order.update({
