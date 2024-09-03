@@ -8,6 +8,9 @@ export async function POST(
   { params }: { params: { orderId: string } }
 ) {
   const { orderId } = params;
+  // App fee value
+  // change also in checkout/
+  const contribValue = 2
 
   const order = await prisma.order.findUnique({
     where: {
@@ -22,6 +25,7 @@ export async function POST(
       automatic_payment_methods: {
         enabled: true,
       },
+      application_fee_amount: contribValue * 100, 
     });
 
     await prisma.order.update({

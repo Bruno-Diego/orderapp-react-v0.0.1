@@ -33,6 +33,10 @@ const CheckoutPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // App fee value
+  // change also in api/create-intent
+  const contribValue = 2
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -66,6 +70,7 @@ const CheckoutPage: React.FC = () => {
       </div>
     );
   }
+  
   const handleCheckout = async (data: any) => {
     setIsSubmitting(true); // Start showing the spinner
     try {
@@ -81,7 +86,7 @@ const CheckoutPage: React.FC = () => {
           userEmail: customerDetails.email,
           userAddress: customerDetails.address,
           products: products,
-          price: totalPrice,
+          price: totalPrice + contribValue,
           status: "Atesa pagamento",
         }),
       });
@@ -216,11 +221,11 @@ const CheckoutPage: React.FC = () => {
                     <span>
                       Contributo aplicazione
                     </span>
-                    <span>€2</span>
+                    <span>€ {contribValue}</span>
                   </li>
               </ul>
               <h3 className="text-lg font-bold mt-4">
-                Totale: € {totalPrice.toFixed(2)}
+                Totale: € {(totalPrice + contribValue).toFixed(2)}
               </h3>
             </div>
 

@@ -110,10 +110,10 @@ const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
 
   return (
     <div className="md:w-full p-4 md:p-0 md:m-1" key={id}>
-      <Card className="max-w-lg mt-4 shadow-lg rounded-lg">
+      <Card className="max-w-lg mt-4 md:mx-auto shadow-lg rounded-lg">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
-            <div className="md:flex p-0 m-auto">
+            <div className="md:flex p-0 m-auto md:space-x-6">
               {img ? (
                 <Image
                   src={img}
