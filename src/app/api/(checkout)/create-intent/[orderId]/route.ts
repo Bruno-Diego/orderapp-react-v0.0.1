@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_KEBAPTEST_SECRET_KEY);
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_BRUNOTEST_SECRET_KEY);
 
 export async function POST(
   request: NextRequest,

@@ -7,7 +7,7 @@ import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_KEBAPTEST_PUBLISHABLE_KEY!
+  process.env.NEXT_PUBLIC_STRIPE_BRUNOTEST_PUBLISHABLE_KEY!
 );
 
 const PayPage = ({ params }: { params: { id: string } }) => {

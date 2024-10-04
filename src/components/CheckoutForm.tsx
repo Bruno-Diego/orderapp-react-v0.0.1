@@ -30,36 +30,42 @@ const CheckoutForm = ({
   const { products, totalPrice, resetCart } = useCartStore();
 
   useEffect(() => {
-    if (!stripe) {
+    if (!stripe || !clientSecret) {
       return;
     }
 
-    // const clientSecret = new URLSearchParams(window.location.search).get(
-    //   "payment_intent_client_secret"
-    // );
+    const checkPaymentStatus = () => {
+      stripe
+        .retrievePaymentIntent(clientSecret)
+        .then(({ paymentIntent }) => {
+          console.log("Payment Intent Status: " + paymentIntent?.status); // Log the status
 
-    if (!clientSecret) {
-      return;
-    }
-    // console.log("Stripe: "+ stripe)
-    // console.log("clientsecret: "+ clientSecret)
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      // console.log("paymentIntent: " + paymentIntent?.status);
-      switch (paymentIntent?.status) {
-        case "succeeded":
-          setMessage("Payment succeeded!");
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Please provide a payment method.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
-      }
-    });
+          switch (paymentIntent?.status) {
+            case "succeeded":
+              setMessage("Payment succeeded!");
+              break;
+            case "processing":
+              setMessage("Your payment is processing.");
+              // Continue checking if it's still processing
+              setTimeout(checkPaymentStatus, 50); // Check again after 5 seconds
+              break;
+            case "requires_payment_method":
+              setMessage("Please provide a payment method.");
+              setTimeout(checkPaymentStatus, 50)
+              break;
+            default:
+              setMessage("Something went wrong.");
+              break;
+          }
+        })
+        .catch((error) => {
+          console.error("Error retrieving Payment Intent:", error);
+          setMessage("Error occurred while checking payment status.");
+        });
+    };
+
+    // Initial check
+    checkPaymentStatus();
   }, [stripe, clientSecret]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,7 +94,7 @@ const CheckoutForm = ({
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
     if (error) {
-      console.log(error)
+      console.log(error);
       if (error.type === "card_error" || error.type === "validation_error") {
         setMessage(error.message || "Something went wrong!");
       } else {
@@ -100,7 +106,6 @@ const CheckoutForm = ({
       setIsLoading(false);
     }
   };
-
 
   return (
     <form
@@ -125,7 +130,7 @@ const CheckoutForm = ({
           {isLoading ? (
             <ClipLoader size={24} color="#ffffff" /> // Show spinner while submitting
           ) : (
-            <div  className="flex text-center items-center gap-1">
+            <div className="flex text-center items-center gap-1">
               <GiPadlock />
               Pagamento Sicuro
             </div>
@@ -133,7 +138,14 @@ const CheckoutForm = ({
         </span>
       </button>
       {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      {message && (
+        <div
+          className="bg-gray-500 text-white p-4 rounded-md w-1/2 mx-auto text-center"
+          id="payment-message"
+        >
+          {message}
+        </div>
+      )}
     </form>
   );
 };
