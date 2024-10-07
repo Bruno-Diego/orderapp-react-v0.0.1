@@ -25,6 +25,7 @@ export async function POST(
       automatic_payment_methods: {
         enabled: true,
       },
+      transfer_group: orderId, // Define transfer_group by orderId
       // application_fee_amount: contribValue * 100, 
     });
 
