@@ -17,8 +17,22 @@ export async function POST(
       orderId: orderId,
     },
   });
-
-  if (order) {
+  console.log("Order fond: " + order?.orderId)
+  console.log("Order intent: " + order?.intent_id)
+  
+  if (order?.intent_id) {
+    
+    console.log("Order intent already exists: " + order?.intent_id)
+    // Return the existing Payment Intent's client secret
+    const existingPaymentIntent = await stripe.paymentIntents.retrieve(order.intent_id);
+    return new NextResponse(
+      JSON.stringify({ clientSecret: existingPaymentIntent.client_secret }),
+      { status: 200 }
+    );
+  }
+  
+  console.log("Creating intent: ")
+  if (order && !order?.intent_id) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: order.price.toNumber() * 100,
       currency: "eur",
@@ -28,13 +42,16 @@ export async function POST(
       transfer_group: orderId, // Define transfer_group by orderId
       // application_fee_amount: contribValue * 100, 
     });
-
+    console.log("Created intent: " + paymentIntent)
+    console.log("Updating order... ")
+    
     await prisma.order.update({
       where: {
         orderId: orderId,
       },
       data: { intent_id: paymentIntent.id },
     });
+    console.log("Updated order... ")
 
     return new NextResponse(
       JSON.stringify({ clientSecret: paymentIntent.client_secret }),

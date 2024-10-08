@@ -23,6 +23,7 @@ export const PUT = async (request: NextRequest) => {
       },
       data: { status: "In Cucina!" },
     });
+
     console.log("Order PUT" + order)
     // Verifique se o pedido e o intent_id existem
     if (!order || !order.intent_id) {
@@ -32,6 +33,20 @@ export const PUT = async (request: NextRequest) => {
       );
     }
 
+    // Assuming paymentIntent is stored in the order
+    const paymentIntentId = order.intent_id;
+
+    if (!paymentIntentId) {
+      return new NextResponse(
+        JSON.stringify({ message: "Payment Intent not found!" }),
+        { status: 404 }
+      );
+    }
+
+    // Retrieve the Payment Intent
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    console.log("paymentIntent: " + paymentIntent)
+    // Create a transfer only when the funds are available (using source_transaction)
     try {
       // Realize a transferência dos fundos para a conta conectada
       const transferAmount = (order.price.toNumber() - 2) * 100; // O valor do produto menos o contribValue (2 euros)
@@ -40,7 +55,7 @@ export const PUT = async (request: NextRequest) => {
         amount: transferAmount, // Valor em centavos
         currency: "eur",
         destination: process.env.STRIPE_KEBAP_CONNECTED_ACCOUNT, // ID da conta conectada do restaurante
-        source_transaction: "source_" + orderId, // Use o transfer_group do PaymentIntent
+        source_transaction: paymentIntent.latest_charge, // Associate the charge with the transfer
         transfer_group: orderId, // Use o transfer_group do PaymentIntent
       });
 

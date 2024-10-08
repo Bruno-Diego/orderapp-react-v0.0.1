@@ -4,7 +4,7 @@ import CheckoutForm from "@/components/CheckoutForm";
 import { useCartStore } from "@/lib/store";
 import { Elements } from "@stripe/react-stripe-js";
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_BRUNOTEST_PUBLISHABLE_KEY!
@@ -16,22 +16,33 @@ const PayPage = ({ params }: { params: { id: string } }) => {
 
   const { id } = params;
 
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await fetch(`/api/create-intent/${id}`, {
-          method: "POST",
-        });
-        const data = await res.json();
-        // console.log(data)
-        setClientSecret(data.clientSecret);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+ // useRef to track if the useEffect has run
+ const hasFetchedData = useRef(false); 
 
-    makeRequest();
-  }, [id]);
+ useEffect(() => {
+   // Prevents double fetching in development (due to React.StrictMode)
+   if (hasFetchedData.current) {
+     return;
+   }
+
+   const makeRequest = async () => {
+     try {
+       const res = await fetch(`/api/create-intent/${id}`, {
+         method: "POST",
+       });
+       const data = await res.json();
+       setClientSecret(data.clientSecret);
+     } catch (err) {
+       console.log(err);
+     }
+   };
+
+   makeRequest();
+
+   // Mark that the request has been made
+   hasFetchedData.current = true;
+
+ }, [id]); // Only re-run when `id` changes
 
   const options: StripeElementsOptions = {
     clientSecret,
