@@ -81,7 +81,9 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
   };
 
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+    if (quantity < 10) {
+      setQuantity(quantity + 1);
+    }
   };
 
   const decreaseQuantity = () => {

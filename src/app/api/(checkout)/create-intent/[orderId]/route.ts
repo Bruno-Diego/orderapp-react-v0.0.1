@@ -10,7 +10,7 @@ export async function POST(
   const { orderId } = params;
   // App fee value
   // change also in checkout/
-  const contribValue = 2
+  // const contribValue = 2
 
   const order = await prisma.order.findUnique({
     where: {

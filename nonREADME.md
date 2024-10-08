@@ -46,3 +46,9 @@ Indirizzo: VIA GUGLIELMO JERVIS 3 - 10015 - IVREA (TO)
 Rea: 1323782
 PEC: sahin2727@pec.buffetti.it
 Dipendenti : 3 (2024)
+
+
+
+..::CLERK Production config::..
+Clerk’s API will be hosted on clerk.starturchis.belinked.website
+Verification emails will be sent from @starturchis.belinked.website

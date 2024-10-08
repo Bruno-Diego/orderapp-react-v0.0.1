@@ -49,7 +49,7 @@ export const PUT = async (request: NextRequest) => {
     // Create a transfer only when the funds are available (using source_transaction)
     try {
       // Realize a transferência dos fundos para a conta conectada
-      const transferAmount = (order.price.toNumber() - 2) * 100; // O valor do produto menos o contribValue (2 euros)
+      const transferAmount = order.price.toNumber() <= 42 ? (order.price.toNumber() - 2) * 100 : (order.price.toNumber() - 5) * 100; // O valor do produto menos o contribValue (2 euros)
 
       const transfer = await stripe.transfers.create({
         amount: transferAmount, // Valor em centavos

@@ -33,14 +33,11 @@ const CheckoutPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // App fee value
-  // change also in api/create-intent
-  const contribValue = 2
-
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
+  
   useEffect(() => {
     const getUserData = async () => {
       if (user) {
@@ -55,7 +52,7 @@ const CheckoutPage: React.FC = () => {
     };
     getUserData();
   }, [user]);
-
+  
   if (!isLoaded || !userId) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -90,7 +87,7 @@ const CheckoutPage: React.FC = () => {
           status: "Atesa pagamento",
         }),
       });
-
+      
       if (res.ok) {
         // const response = await res.json();
         // alert("Order placed successfully!");
@@ -107,11 +104,15 @@ const CheckoutPage: React.FC = () => {
       // resetCart();
     }
   };
-
+  
   if (!isMounted) {
     return null;
   }
-
+  
+  // App fee value
+  // change also in api/create-intent
+  const contribValue = totalPrice <= 40 ? 2 : 5
+  
   return (
     <div className="min-h-screen flex items-start justify-center bg-gray-100 p-6">
       {totalPrice === 0 ? (
