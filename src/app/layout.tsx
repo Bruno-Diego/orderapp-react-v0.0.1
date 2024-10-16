@@ -4,9 +4,8 @@ import "./globals.css";
 
 import Navbar from "@/components/Navbar";
 
-import {
-  ClerkProvider,
-} from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +25,12 @@ export default function RootLayout({
         <body className={inter.className}>
           <Navbar />
           {children}
+          <Script
+            id="cookieyes"
+            type="text/javascript"
+            async
+            src="https://cdn-cookieyes.com/client_data/3c11a35db5e7e097d7ea4762/script.js"
+          />
         </body>
       </html>
     </ClerkProvider>

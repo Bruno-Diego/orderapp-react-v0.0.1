@@ -4,8 +4,8 @@ import { prisma } from '@/lib/db';
 export const checkUser = async () => {
   const user = await currentUser();
 
-  console.log(user)
-  console.log(user?.emailAddresses[0].emailAddress)
+  // console.log(user)
+  // console.log(user?.emailAddresses[0].emailAddress)
   
   // Check for current logged in clerk user
   if (!user) {
@@ -18,7 +18,7 @@ export const checkUser = async () => {
       clerkUserId: user.id,
     },
   });
-  console.log(loggedInUser)
+  // console.log(loggedInUser)
   
   // If user is in database, return user
   if (loggedInUser) {
@@ -28,6 +28,8 @@ export const checkUser = async () => {
   
   // If not in database, create new user
   console.log("User not found in the database! Creating...")
+
+
   const newUser = await prisma.user.create({
     data: {
       clerkUserId: user.id,
@@ -37,7 +39,7 @@ export const checkUser = async () => {
       address: "Si prega di fornire un indirizzo valido per la consegna.",
     },
   });
-  console.log("New user: "+newUser)
+  // console.log("New user: "+ newUser)
 
   return newUser;
 };
