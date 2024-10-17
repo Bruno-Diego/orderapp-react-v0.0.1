@@ -14,6 +14,7 @@ import {
 } from "react-icons/bs";
 import { useCartStore } from "@/lib/store"; // Import the cart store
 import { useUser } from "@clerk/nextjs";
+import { Badge } from "@/components/ui/badge";
 
 interface Product {
   id: string;
@@ -134,6 +135,9 @@ const ProductPage = ({ params }: Props) => {
           <h1 className="text-3xl font-bold mb-2 text-center">
             {product.title}
           </h1>
+          <div className=" text-center">
+            <Badge variant="secondary">{product.catSlug}</Badge>
+          </div>
           <p className="text-gray-700 text-lg mb-4 text-center">
             {product.desc}
           </p>

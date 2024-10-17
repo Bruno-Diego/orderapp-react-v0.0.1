@@ -19,6 +19,7 @@ interface Product {
   img?: string;
   price: number;
   options?: { title: string; additionalPrice: number }[];
+  catSlug?: string;
 }
 
 const MenuPage = () => {
@@ -49,6 +50,7 @@ const MenuPage = () => {
             price={product.price}
             img={product.img}
             desc={product.desc}
+            catSlug={product.catSlug}
           />
         ))}
       </div>

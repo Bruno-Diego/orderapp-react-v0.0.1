@@ -21,6 +21,7 @@ interface Product {
   img?: string;
   price: number;
   options?: { title: string; additionalPrice: number }[];
+  catSlug?: string;
 }
 
 const FeaturedCarouselComponent = () => {
@@ -71,6 +72,7 @@ const FeaturedCarouselComponent = () => {
                 price={product.price}
                 img={product.img}
                 desc={product.desc}
+                catSlug={product.catSlug}
               />
             </div>
           </CarouselItem>

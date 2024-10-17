@@ -24,6 +24,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useCartStore } from "@/lib/store";
+import { Badge } from "./ui/badge";
 
 interface Product {
   id: string;
@@ -41,9 +42,10 @@ interface ItemCardProps {
   price: number|string;
   img?: string;
   desc?: string;
+  catSlug?: string;
 }
 
-const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
+const ItemCard = ({ id, title, price, img, desc, catSlug }: ItemCardProps) => {
   const [quantity, setQuantity] = useState(1);
   const { user } = useUser(); // Obtém o usuário autenticado
   const [isAdmin, setIsAdmin] = useState(false);
@@ -131,6 +133,9 @@ const ItemCard = ({ id, title, price, img, desc }: ItemCardProps) => {
                 <CardTitle className="text-xl font-bold text-center">
                   {title}
                 </CardTitle>
+                <div className=" text-center">
+                  <Badge variant="secondary">{catSlug}</Badge>
+                </div>
                 <CardDescription className="text-gray-500 md:mx-auto text-center md:w-2/3 text-wrap">
                   {desc}
                 </CardDescription>

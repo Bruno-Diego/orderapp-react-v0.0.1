@@ -10,6 +10,7 @@ import {
   BsPencilSquare,
 } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,12 +39,13 @@ interface Product {
 interface FeaturedCardProps {
   id: string;
   title: string;
-  price: number|string;
+  price: number | string;
   img?: string;
   desc?: string;
+  catSlug?: string;
 }
 
-const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
+const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProps) => {
   const [quantity, setQuantity] = useState(1);
   const { user } = useUser(); // Obtém o usuário autenticado
   const [isAdmin, setIsAdmin] = useState(false);
@@ -92,7 +94,7 @@ const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
     }
   };
 
-  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  const numericPrice = typeof price === "string" ? parseFloat(price) : price;
   const handleAddToCart = () => {
     if (id) {
       addToCart({
@@ -104,7 +106,6 @@ const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
       });
     }
   };
-
   
   if (!id) {
     return <div className="text-lg text-white">Loading...</div>;
@@ -131,12 +132,17 @@ const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
                 <CardTitle className="text-xl font-bold text-center">
                   {title}
                 </CardTitle>
+                <div className=" text-center">
+                  <Badge variant="secondary">{catSlug}</Badge>
+                </div>
                 <CardDescription className="text-gray-500 text-center">
                   {desc}
                 </CardDescription>
               </div>
               <div className="flex items-center">
-                <p className="text-xl font-bold my-2 text-center mx-auto">€{price}</p>
+                <p className="text-xl font-bold my-2 text-center mx-auto">
+                  €{price}
+                </p>
               </div>
             </div>
           </CardHeader>
