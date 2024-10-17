@@ -125,7 +125,7 @@ const FeaturedCard = ({ id, title, price, img, desc }: FeaturedCardProps) => {
                   className="rounded-full w-24 h-24 object-cover m-auto"
                 />
               ) : (
-                <Skeleton className="h-24 w-24 rounded-full" />
+                <Skeleton className="h-24 w-24 rounded-full m-auto" />
               )}
               <div className="md:ml-4 flex-1 md:space-y-4">
                 <CardTitle className="text-xl font-bold text-center">
