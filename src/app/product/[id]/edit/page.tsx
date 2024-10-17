@@ -208,6 +208,11 @@ const EditProductPage = ({ params }: { params: { id: string } }) => {
                     <option value="insalate">Insalate</option>
                     <option value="menu_specialita">Menu Specialità</option>
                     <option value="dolci">Dolci</option>
+                    <option value="panini">Panini e Piadine</option>
+                    <option value="pizette">Pizette</option>
+                    <option value="asporto">Piatti da Asporto</option>
+                    <option value="calzoni">Calzoni</option>
+                    <option value="bevande">Bevande</option>
                   </select>
                 </FormControl>
                 <FormDescription>
