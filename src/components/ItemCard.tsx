@@ -113,7 +113,7 @@ const ItemCard = ({ id, title, price, img, desc, catSlug }: ItemCardProps) => {
   }
 
   return (
-    <div className="md:flex md:flex-grow p-4 md:p-0 md:m-1 md:justify-center" key={id}>
+    <div className="md:flex md:flex-grow p-4 md:p-0 md:m-1 md:justify-center m-auto max-w-[300px] md:max-w-none md:min-h-[343px]" key={id}>
       <Card className="md:max-w-sm md:w-full mt-4 shadow-lg rounded-lg">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
@@ -127,7 +127,7 @@ const ItemCard = ({ id, title, price, img, desc, catSlug }: ItemCardProps) => {
                   className="rounded-full w-24 h-24 object-cover m-auto"
                 />
               ) : (
-                <Skeleton className="h-24 w-24 rounded-full" />
+                <Skeleton className="h-24 w-24 rounded-full m-auto" />
               )}
               <div className="md:ml-4 flex-1 md:space-y-4">
                 <CardTitle className="text-xl font-bold text-center">

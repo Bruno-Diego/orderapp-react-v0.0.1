@@ -128,7 +128,9 @@ const Navbar = () => {
         </div>
         <div className="md:flex gap-4 items-center justify-center flex-1">
           <div className="lg:static flex flex-col md:flex-row items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
-            <FiPhone className="w-6 h-6 md:w-4 md:h-4" />
+            <a className="text-xs flex md:hidden" href="tel:+393240560356">
+              <FiPhone className="w-6 h-6 md:w-4 md:h-4" />
+            </a>
             <a className="text-xs hidden md:flex" href="tel:+393240560356">
               324 056 0356
             </a>
