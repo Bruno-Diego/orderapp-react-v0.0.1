@@ -113,7 +113,7 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
 
   return (
     <div className="md:w-full p-4 md:p-0 md:m-1" key={id}>
-      <Card className="max-w-lg mt-4 md:mx-auto shadow-lg rounded-lg">
+      <Card className="max-w-lg h-[20rem] mt-4 md:mx-auto shadow-lg rounded-lg">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
             <div className="md:flex p-0 m-auto md:space-x-6">
@@ -129,13 +129,13 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
                 <Skeleton className="h-24 w-24 rounded-full m-auto" />
               )}
               <div className="md:ml-4 flex-1 md:space-y-4">
-                <CardTitle className="text-xl font-bold text-center">
+                <CardTitle className="font-bold text-center">
                   {title}
                 </CardTitle>
-                <div className=" text-center">
+                <div className="text-center">
                   <Badge variant="secondary">{catSlug}</Badge>
                 </div>
-                <CardDescription className="text-gray-500 text-center">
+                <CardDescription className="text-gray-500 text-center text-xs">
                   {desc}
                 </CardDescription>
               </div>
@@ -148,7 +148,7 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
           </CardHeader>
         </Link>
         <CardContent>
-          <div className="text-right">
+          <div className="text-right p-0">
             <div className="items-center space-x-2">
               <div className="flex items-center space-x-2 justify-center">
                 <Button size="icon" onClick={decreaseQuantity}>
