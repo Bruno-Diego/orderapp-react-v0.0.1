@@ -4,7 +4,7 @@ import Logo from "./Logo";
 
 const Footer = () => {
   return (
-    <div className="border-t-2 border-red-500 w-full flex flex-col">
+    <div className="border-t-2 bg-background border-red-500 w-full flex flex-col ">
       {/* LOGO */}
       <div className="w-80 mx-auto">
         <Link href="/">
@@ -23,13 +23,13 @@ const Footer = () => {
               </Link>
             </div>
           </li>
-          <li className="m-2">
+          {/* <li className="m-2">
             <div>
               <Link target="_blank" href="https://wa.me/393240560356">
                 <i className="fa-brands fa-whatsapp fa-2xl"></i>
               </Link>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

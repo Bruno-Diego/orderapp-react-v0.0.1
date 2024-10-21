@@ -12,7 +12,7 @@ import {
   FormControl,
   FormDescription,
 } from "@/components/ui/form";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
 import { ClipLoader } from "react-spinners";
 
@@ -43,6 +43,7 @@ const CheckoutPage: React.FC = () => {
       if (user) {
         const res = await fetch("/api/getuserdata");
         const userData = await res.json();
+        console.log(userData)
         setCustomerDetails({
           name: userData.user.name,
           email: userData.user.email,

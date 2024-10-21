@@ -25,6 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useCartStore } from "@/lib/store";
+import FeaturedCardAdminBtns from "./FeaturedCardAdminBtns";
 
 interface Product {
   id: string;
@@ -53,17 +54,17 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
   const [product, setProduct] = useState<Product | null>(null);
   const { addToCart } = useCartStore((state) => state);
 
-  useEffect(() => {
-    const checkAdminRole = async () => {
-      if (user) {
-        const response = await fetch("/api/admincheck");
-        console.log("response: " + response);
-        const data = await response.json();
-        setIsAdmin(data.isAdmin);
-      }
-    };
-    checkAdminRole();
-  }, [user]);
+  // useEffect(() => {
+  //   const checkAdminRole = async () => {
+  //     if (user) {
+  //       const response = await fetch("/api/admincheck");
+  //       console.log("response: " + response);
+  //       const data = await response.json();
+  //       setIsAdmin(data.isAdmin);
+  //     }
+  //   };
+  //   checkAdminRole();
+  // }, [user]);
 
   const handleDelete = async () => {
     if (id) {
@@ -113,7 +114,7 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
 
   return (
     <div className="md:w-full p-4 md:p-0 md:m-1" key={id}>
-      <Card className="max-w-lg h-[20rem] mt-4 md:mx-auto shadow-lg rounded-lg">
+      <Card className="max-w-lg mt-4 md:mx-auto shadow-lg rounded-lg">
         <Link href={`/product/${id}`} key={id}>
           <CardHeader>
             <div className="md:flex p-0 m-auto md:space-x-6">
@@ -129,13 +130,13 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
                 <Skeleton className="h-24 w-24 rounded-full m-auto" />
               )}
               <div className="md:ml-4 flex-1 md:space-y-4">
-                <CardTitle className="font-bold text-center">
+                <CardTitle className="text-xl font-bold text-center">
                   {title}
                 </CardTitle>
-                <div className="text-center">
+                <div className=" text-center">
                   <Badge variant="secondary">{catSlug}</Badge>
                 </div>
-                <CardDescription className="text-gray-500 text-center text-xs">
+                <CardDescription className="text-gray-500 text-center">
                   {desc}
                 </CardDescription>
               </div>
@@ -148,7 +149,7 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
           </CardHeader>
         </Link>
         <CardContent>
-          <div className="text-right p-0">
+          <div className="text-right">
             <div className="items-center space-x-2">
               <div className="flex items-center space-x-2 justify-center">
                 <Button size="icon" onClick={decreaseQuantity}>
@@ -164,22 +165,7 @@ const FeaturedCard = ({ id, title, price, img, desc, catSlug }: FeaturedCardProp
                 </Button>
               </div>
               {/* Admin Button */}
-              {isAdmin && (
-                <div className="flex justify-center">
-                  {/* Edit Button */}
-                  <Link href={`/product/${id}/edit`}>
-                    <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
-                      <BsPencilSquare className="h-6 w-6" />
-                    </Button>
-                  </Link>
-                  <Button
-                    className="text-white bg-red-600 hover:bg-red-700 m-1 font-bold py-2 px-4 rounded-lg"
-                    onClick={handleDelete}
-                  >
-                    <BsTrash3 className="h-6 w-6" />
-                  </Button>
-                </div>
-              )}
+              {/* isAdmin && <FeaturedCardAdminBtns /> */}
             </div>
           </div>
         </CardContent>
