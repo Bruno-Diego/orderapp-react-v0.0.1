@@ -33,17 +33,16 @@ const CheckoutPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
+
   useEffect(() => {
     const getUserData = async () => {
       if (user) {
         const res = await fetch("/api/getuserdata");
         const userData = await res.json();
-        console.log(userData)
+        // console.log(userData)
         setCustomerDetails({
           name: userData.user.name,
           email: userData.user.email,
@@ -53,7 +52,7 @@ const CheckoutPage: React.FC = () => {
     };
     getUserData();
   }, [user]);
-  
+
   if (!isLoaded || !userId) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -68,9 +67,24 @@ const CheckoutPage: React.FC = () => {
       </div>
     );
   }
-  
+
   const handleCheckout = async (data: any) => {
     setIsSubmitting(true); // Start showing the spinner
+
+    // Criação de uma mensagem para o chef incluindo personalizações
+    const messageToChef = data.messageToChef // remove data.messageToChef to add personalizzazioni
+      // data.messageToChef +
+      // "\n\n" +
+      // products
+      //   .map((item: any) => {
+      //     const customizations = data.products[item.id]?.customizations || [];
+      //     const customMessage = customizations.length
+      //       ? ` (Personalizzazioni: ${customizations.join(", ")})`
+      //       : "";
+      //     return `${item.quantity} x ${item.name}${customMessage}`;
+      //   })
+      //   .join("\n");
+
     try {
       // console.log(userData);
       const res = await fetch("/api/userorders", {
@@ -84,11 +98,12 @@ const CheckoutPage: React.FC = () => {
           userEmail: customerDetails.email,
           userAddress: customerDetails.address,
           products: products,
+          messageToChef,
           price: totalPrice + contribValue,
           status: "Atesa pagamento",
         }),
       });
-      
+
       if (res.ok) {
         // const response = await res.json();
         // alert("Order placed successfully!");
@@ -105,15 +120,15 @@ const CheckoutPage: React.FC = () => {
       // resetCart();
     }
   };
-  
+
   if (!isMounted) {
     return null;
   }
-  
+
   // App fee value
   // change also in api/create-intent
-  const contribValue = totalPrice <= 40 ? 2 : 5
-  
+  const contribValue = totalPrice <= 40 ? 2 : 5;
+
   return (
     <div className="min-h-screen flex items-start justify-center bg-gray-100 p-6">
       {totalPrice === 0 ? (
@@ -202,6 +217,27 @@ const CheckoutPage: React.FC = () => {
               )}
             /> */}
 
+            {/* Nova seção: Mensagem para o chef */}
+            <FormField
+              name="messageToChef"
+              control={methods.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Messaggio allo chef</FormLabel>
+                  <FormDescription>
+                    Se desideri aggiungere una nota, scrivi qui.
+                  </FormDescription>
+                  <FormControl>
+                    <textarea
+                      {...field}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      placeholder="Scrivi un messaggio per lo chef..."
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             {/* Order Summary */}
             <div className="mt-6">
               <h2 className="text-xl font-bold mb-4">
@@ -218,13 +254,10 @@ const CheckoutPage: React.FC = () => {
                 ))}
               </ul>
               <ul>
-                
-                  <li className="flex justify-between py-2 text-sm">
-                    <span>
-                      Contributo aplicazione
-                    </span>
-                    <span>€ {contribValue}</span>
-                  </li>
+                <li className="flex justify-between py-2 text-sm">
+                  <span>Contributo aplicazione</span>
+                  <span>€ {contribValue}</span>
+                </li>
               </ul>
               <h3 className="text-lg font-bold mt-4">
                 Totale: € {(totalPrice + contribValue).toFixed(2)}
