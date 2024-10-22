@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_BRUNOTEST_SECRET_KEY);
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 export const PUT = async (request: NextRequest) => {
   const url = new URL(request.url);
