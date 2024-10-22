@@ -101,15 +101,15 @@ const CartDrawer = () => {
             Rivedi gli articoli che hai aggiunto al carrello.
           </DrawerDescription>
         </DrawerHeader>
-        <div className="drawer-body px-4">
+        <div className="w-full px-4">
           {totalItems === 0 ? (
             <p className="text-white pb-5">Il tuo carrello è vuoto.</p>
           ) : (
-            <ul className="text-white px-4 md:flex">
+            <ul className="text-white px-4 md:flex overflow-auto">
               {products.map((product) => (
                 <li
                   key={product.id}
-                  className="cart-item flex md:flex-1 md:mx-2 md: justify-between items-center py-2"
+                  className="cart-item flex md:flex-1 md:mx-2 justify-between items-center py-2"
                 >
                   <Card className="w-full flex max-w-lg shadow-lg rounded-lg items-center">
                     <Link
