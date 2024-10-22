@@ -95,6 +95,7 @@ const CheckoutPage: React.FC = () => {
         body: JSON.stringify({
           userId: userId,
           orderId: uniqueId,
+          name: customerDetails.name,
           userEmail: customerDetails.email,
           userAddress: customerDetails.address,
           products: products,

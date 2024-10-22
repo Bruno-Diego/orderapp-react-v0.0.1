@@ -65,6 +65,7 @@ model Product {
 model Order {
   orderId       String   @id @unique @default(dbgenerated("gen_random_uuid()"))
   userId        String
+  name          String?
   createdAt     DateTime @default(now())
   price         Decimal
   products      Json[]

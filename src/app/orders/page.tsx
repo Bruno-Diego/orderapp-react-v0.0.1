@@ -5,14 +5,26 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { Decimal } from "@prisma/client/runtime/library";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 interface Order {
   id: string;
   orderId: string;
+  name: string;
   createdAt: Date;
   price: Decimal;
   products: { id: string; name: string; quantity: number; price: number }[];
   status: string;
   userEmail: string;
+  messageToChef: string;
 }
 
 const OrderListPage = () => {
@@ -33,7 +45,7 @@ const OrderListPage = () => {
           setIsAdmin(true);
         }
       } else if (user !== undefined) {
-        router.push("/")
+        router.push("/");
       }
     };
     checkAdminRole();
@@ -88,36 +100,62 @@ const OrderListPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-
       <h1 className="text-3xl font-bold mb-6">Order Management</h1>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg shadow-md">
-          <thead>
-            <tr>
-              <th className="py-3 px-6 text-left">Ordine ID</th>
-              <th className="py-3 px-6 text-left">Data</th>
-              <th className="py-3 px-6 text-left">Email</th>
-              <th className="py-3 px-6 text-left">Totale</th>
-              <th className="py-3 px-6 text-left">Stato</th>
+        <Table className="min-w-full bg-white rounded-lg shadow-md">
+          <TableHeader>
+            <TableRow>
+              {/* <th className="py-3 px-6 text-left">Ordine ID</th> */}
+              <TableHead className="py-3 px-6 text-left w-[100px]">Cliente</TableHead>
+              {/* <th className="py-3 px-6 text-left">Email</th> */}
+              <TableHead className="py-3 px-6 text-left">Ordine</TableHead>
               {isAdmin && (
-                <th className="py-3 px-6 text-center">Cambia stato</th>
+                <TableHead className="py-3 px-6 text-center">
+                  Personalizzazioni
+                </TableHead>
               )}
-            </tr>
-          </thead>
-          <tbody>
+              <TableHead className="py-3 px-6 text-left">Stato</TableHead>
+              {isAdmin && (
+                <TableHead className="py-3 px-6 text-center">
+                  Cambia stato
+                </TableHead>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {orders.map((order) => (
-              <tr key={order.orderId}>
-                <td className="py-4 px-6">{order.orderId}</td>
-                <td className="py-4 px-6">
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </td>
-                <td className="py-4 px-6">{order.userEmail}</td>
-                <td className="py-4 px-6">€{Number(order.price).toFixed(2)}</td>
-                <td className="py-4 px-6">{order.status}</td>
+              <TableRow key={order.orderId}>
+                {/* <td className="py-4 px-6">{order.orderId}</td> */}
+                <TableCell className="py-4 px-6">
+                  <span><b>Nome: </b>{order.name}</span> <br />
+                  <span><b>E-mail: </b>{order.userEmail}</span> <br />
+                  <span><b>Data e ora: </b>{new Date(order.createdAt).toLocaleString()}</span>
+                </TableCell>
+                
+                {/* <td className="py-4 px-6">{order.userEmail}</td> */}
+                <TableCell className="py-4 px-6">
+                  {/* Map through the products array to display the product names */}
+                  {order.products.map((product) => (
+                    <span className="text-nowrap" key={product.id}>
+                      {product.quantity}x {product.name} <br />
+                      {/* Optionally add a comma if there are multiple products */}
+                    </span> 
+                  ))}
+                  <br />
+                  {/* Display the order price */}
+                  {"TOTALE: "}€
+                  {Number(order.price).toFixed(2)}
+                </TableCell>
+                {isAdmin && (
+                  <TableCell className="py-4 px-6">
+                    {order.messageToChef}
+                  </TableCell>
+                )}
+                <TableCell className="py-4 px-6">{order.status}</TableCell>
                 {isAdmin &&
                   order.status !== "Atesa pagamento" &&
                   order.status !== "Completato" && (
-                    <td className="py-4 px-6 text-center">
+                    <TableCell className="py-4 px-6 text-center">
                       <select
                         value={order.status}
                         onChange={(e) =>
@@ -133,12 +171,12 @@ const OrderListPage = () => {
                         <option value="Consegnato">consegnato</option>
                         <option value="Completato">completato</option>
                       </select>
-                    </td>
+                    </TableCell>
                   )}
-              </tr>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
