@@ -123,10 +123,22 @@ const Navbar = () => {
             </div>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <div className="flex flex-col items-center">
+              <UserButton />
+              {/* Ordine button */}
+              <div className="md:flex gap-4 my-2 items-center justify-center flex-1">
+                <div className="lg:static flex flex-col md:flex-row items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
+                  <a className="text-xs flex" href="/orders">
+                    <p>Ordine</p>
+                  </a>
+                </div>
+              </div>
+            </div>
           </SignedIn>
         </div>
-        <div className="md:flex gap-4 items-center justify-center flex-1">
+
+        {/* Phone button */}
+        {/* <div className="md:flex gap-4 items-center justify-center flex-1">
           <div className="lg:static flex flex-col md:flex-row items-center gap-2 cursor-pointer bg-yellow-100 px-1 rounded-md">
             <a className="text-xs flex md:hidden" href="tel:+393240560356">
               <FiPhone className="w-6 h-6 md:w-4 md:h-4" />
@@ -135,7 +147,7 @@ const Navbar = () => {
               324 056 0356
             </a>
           </div>
-        </div>
+        </div> */}
         {/* <UserLinks/> */}
         {/* <CartIcon /> */}
         <div className="my-1 flex justify-center">
