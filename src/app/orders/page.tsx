@@ -24,7 +24,7 @@ const OrderListPage = () => {
 
   useEffect(() => {
     const checkAdminRole = async () => {
-      if (user) {
+      if (user && user !== undefined) {
         const res = await fetch("/api/admincheck");
         const data = await res.json();
         if (!data.isAdmin) {
@@ -32,7 +32,7 @@ const OrderListPage = () => {
         } else {
           setIsAdmin(true);
         }
-      } else {
+      } else if (user !== undefined) {
         router.push("/")
       }
     };
