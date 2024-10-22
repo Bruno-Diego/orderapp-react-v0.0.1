@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 import {
   BsDashLg,
@@ -26,15 +26,15 @@ import {
 import { useCartStore } from "@/lib/store";
 import { Badge } from "./ui/badge";
 
-interface Product {
-  id: string;
-  title: string;
-  catSlug: string;
-  desc?: string;
-  img?: string;
-  price: number;
-  options?: { title: string; additionalPrice: number }[];
-}
+// interface Product {
+//   id: string;
+//   title: string;
+//   catSlug: string;
+//   desc?: string;
+//   img?: string;
+//   price: number;
+//   options?: { title: string; additionalPrice: number }[];
+// }
 
 interface ItemCardProps {
   id: string;
@@ -47,40 +47,40 @@ interface ItemCardProps {
 
 const ItemCard = ({ id, title, price, img, desc, catSlug }: ItemCardProps) => {
   const [quantity, setQuantity] = useState(1);
-  const { user } = useUser(); // Obtém o usuário autenticado
-  const [isAdmin, setIsAdmin] = useState(false);
-  const router = useRouter(); // Initialize useRouter
-  const [product, setProduct] = useState<Product | null>(null);
+  // const { user } = useUser(); // Obtém o usuário autenticado
+  // const [isAdmin, setIsAdmin] = useState(false);
+  // const router = useRouter(); // Initialize useRouter
+  // const [product, setProduct] = useState<Product | null>(null);
   const { addToCart } = useCartStore((state) => state);
 
-  useEffect(() => {
-    const checkAdminRole = async () => {
-      if (user) {
-        const response = await fetch("/api/admincheck");
-        console.log("response: " + response);
-        const data = await response.json();
-        setIsAdmin(data.isAdmin);
-      }
-    };
-    checkAdminRole();
-  }, [user]);
+  // useEffect(() => {
+  //   const checkAdminRole = async () => {
+  //     if (user) {
+  //       const response = await fetch("/api/admincheck");
+  //       console.log("response: " + response);
+  //       const data = await response.json();
+  //       setIsAdmin(data.isAdmin);
+  //     }
+  //   };
+  //   checkAdminRole();
+  // }, [user]);
 
-  const handleDelete = async () => {
-    if (id) {
-      try {
-        const response = await fetch(`/api/products/${id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          router.push("/menu"); // Redirect to menu after deletion
-        } else {
-          console.error("Failed to delete product");
-        }
-      } catch (error) {
-        console.error("Error deleting product:", error);
-      }
-    }
-  };
+  // const handleDelete = async () => {
+  //   if (id) {
+  //     try {
+  //       const response = await fetch(`/api/products/${id}`, {
+  //         method: "DELETE",
+  //       });
+  //       if (response.ok) {
+  //         router.push("/menu"); // Redirect to menu after deletion
+  //       } else {
+  //         console.error("Failed to delete product");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error deleting product:", error);
+  //     }
+  //   }
+  // };
 
   const increaseQuantity = () => {
     if (quantity < 10) {
@@ -163,22 +163,7 @@ const ItemCard = ({ id, title, price, img, desc, catSlug }: ItemCardProps) => {
                 </Button>
               </div>
               {/* Admin Button */}
-              {isAdmin && (
-                <div className="flex justify-center">
-                  {/* Edit Button */}
-                  <Link href={`/product/${id}/edit`}>
-                    <Button className="text-white m-1 font-bold py-2 px-4 rounded-lg">
-                      <BsPencilSquare className="h-6 w-6" />
-                    </Button>
-                  </Link>
-                  <Button
-                    className="text-white bg-red-600 hover:bg-red-700 m-1 font-bold py-2 px-4 rounded-lg"
-                    onClick={handleDelete}
-                  >
-                    <BsTrash3 className="h-6 w-6" />
-                  </Button>
-                </div>
-              )}
+              {/* isAdmin && <FeaturedCardAdminBtns /> */}
             </div>
           </div>
         </CardContent>

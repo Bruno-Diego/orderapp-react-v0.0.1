@@ -34,12 +34,25 @@ const CategoryPage = ({ params }: Props) => {
     fetchProducts(params.category);
   }, [params.category]);
 
+  function composeHeader(category: string) {
+    switch (category) {
+      case "panini":
+        return "Panini e Piadine";
+      case "menu_specialita":
+        return "Menu Specialita";
+      case "asporto":
+        return "Piatti da Asporto";
+      default:
+        return category;
+    }
+  }
+
   return (
     <main className="min-h-screen flex-col items-center justify-between p-8">
-      <h1 className="text-white text-center uppercase scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        {params.category}
+      <h1 className="text-white bg-red-500 text-center uppercase scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        {composeHeader(params.category)}
       </h1>
-      <div className="w-full flex-wrap md:flex md:flex-nowrap">
+      <div className="w-full flex-wrap md:flex">
         {products.map((product) => (
           <ItemCard
             key={product.id}

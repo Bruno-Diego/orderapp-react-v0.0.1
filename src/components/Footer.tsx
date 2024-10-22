@@ -28,7 +28,7 @@ const Footer = () => {
             <div className="md:flex gap-4 items-center justify-center flex-1">
               <div className="lg:static flex flex-col md:flex-row items-center gap-2 cursor-pointer px-1 rounded-md">
                 <a className="text-xs flex" href="tel:+393240560356">
-                  <FiPhone className="w-7 h-7 md:w-4 md:h-4" />
+                  <FiPhone className="w-7 h-7" />
                 </a>
                 {/* <a className="text-xs hidden md:flex" href="tel:+393240560356">
                   324 056 0356
