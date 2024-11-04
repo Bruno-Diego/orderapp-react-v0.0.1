@@ -106,17 +106,23 @@ const OrderListPage = () => {
           <TableHeader>
             <TableRow>
               {/* <th className="py-3 px-6 text-left">Ordine ID</th> */}
-              <TableHead className="py-3 px-6 text-left w-[100px]">Cliente</TableHead>
+              <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-left min-w-[100px]">
+                Cliente
+              </TableHead>
               {/* <th className="py-3 px-6 text-left">Email</th> */}
-              <TableHead className="py-3 px-6 text-left">Ordine</TableHead>
+              <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-left">
+                Ordine
+              </TableHead>
               {isAdmin && (
-                <TableHead className="py-3 px-6 text-center">
+                <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-center">
                   Personalizzazioni
                 </TableHead>
               )}
-              <TableHead className="py-3 px-6 text-left">Stato</TableHead>
+              <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-left">
+                Stato
+              </TableHead>
               {isAdmin && (
-                <TableHead className="py-3 px-6 text-center">
+                <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-center">
                   Cambia stato
                 </TableHead>
               )}
@@ -126,36 +132,48 @@ const OrderListPage = () => {
             {orders.map((order) => (
               <TableRow key={order.orderId}>
                 {/* <td className="py-4 px-6">{order.orderId}</td> */}
-                <TableCell className="py-4 px-6">
-                  <span><b>Nome: </b>{order.name}</span> <br />
-                  <span><b>E-mail: </b>{order.userEmail}</span> <br />
-                  <span><b>Data e ora: </b>{new Date(order.createdAt).toLocaleString()}</span>
+                <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6 break-all">
+                  <span>
+                    <b>Nome: </b>
+                    {order.name}
+                  </span>{" "}
+                  <br />
+                  <span>
+                    <b>E-mail: </b>
+                    {order.userEmail}
+                  </span>{" "}
+                  <br />
+                  <span>
+                    <b>Data e ora: </b>
+                    {new Date(order.createdAt).toLocaleString()}
+                  </span>
                 </TableCell>
-                
+
                 {/* <td className="py-4 px-6">{order.userEmail}</td> */}
-                <TableCell className="py-4 px-6">
+                <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6">
                   {/* Map through the products array to display the product names */}
                   {order.products.map((product) => (
-                    <span className="text-nowrap" key={product.id}>
+                    <span className="text-nowrap border border-slate-200/50 p-1 " key={product.id}>
                       {product.quantity}x {product.name} <br />
                       {/* Optionally add a comma if there are multiple products */}
-                    </span> 
+                    </span>
                   ))}
                   <br />
                   {/* Display the order price */}
-                  {"TOTALE: "}€
-                  {Number(order.price).toFixed(2)}
+                  {"TOTALE: "}€{Number(order.price).toFixed(2)}
                 </TableCell>
                 {isAdmin && (
-                  <TableCell className="py-4 px-6">
-                    {order.messageToChef}
+                  <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6 max-w-5 break-all">
+                    <span className="border border-red-200/50 p-1">{order.messageToChef}</span>
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-6">{order.status}</TableCell>
+                <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6">
+                  {order.status}
+                </TableCell>
                 {isAdmin &&
                   order.status !== "Atesa pagamento" &&
                   order.status !== "Completato" && (
-                    <TableCell className="py-4 px-6 text-center">
+                    <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6 text-center">
                       <select
                         value={order.status}
                         onChange={(e) =>
