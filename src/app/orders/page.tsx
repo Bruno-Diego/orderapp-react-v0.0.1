@@ -164,7 +164,7 @@ const OrderListPage = () => {
                 </TableCell>
                 {isAdmin && (
                   <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6 max-w-5 break-all">
-                    <span className="border border-red-200/50 p-1">{order.messageToChef}</span>
+                    <span className="border border-red-200/50 p-1 leading-6 md:leading-7">{order.messageToChef}</span>
                   </TableCell>
                 )}
                 <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6">
