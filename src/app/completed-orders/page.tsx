@@ -27,7 +27,7 @@ interface Order {
   messageToChef: string;
 }
 
-const OrderListPage = () => {
+const ComplOrdersListPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const router = useRouter();
 
@@ -57,13 +57,16 @@ const OrderListPage = () => {
         if (user && typeof isAdmin === "boolean") {
           // Ensure isAdmin has been set
           const endpoint = isAdmin
-            ? "/api/adminorders"
+            ? "/api/adminorders/completed"
             : `/api/userorders/${user.primaryEmailAddress?.emailAddress}`;
-          // console.log(`Getting orders list for ${isAdmin ? "admin" : "users"}`);
+          
           const response = await fetch(endpoint);
           const orderData: Order[] = await response.json();
-          // console.log(orderData)
-          setOrders(orderData);
+
+          // Filter only "Completato" orders
+          const completedOrders = orderData.filter(order => order.status === "Completato");
+
+          setOrders(completedOrders);
         }
       } catch (error) {
         console.error("Error fetching orders: ", error);
@@ -73,43 +76,16 @@ const OrderListPage = () => {
     fetchOrders();
   }, [isAdmin, user]);
 
-  const handleStatusChange = async (orderId: string, newStatus: string) => {
-    try {
-      const res = await fetch(`/api/adminorders/${orderId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (res.ok) {
-        const updatedOrder = await res.json();
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.orderId === orderId ? { ...order, status: newStatus } : order
-          )
-        );
-      } else {
-        console.error("Failed to update order status");
-      }
-    } catch (error) {
-      console.error("Error updating order status: ", error);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6">Elenco Ordine</h1>
+      <h1 className="text-3xl font-bold mb-6">Ordine Completate</h1>
       <div className="overflow-x-auto">
         <Table className="min-w-full bg-white rounded-lg shadow-md">
           <TableHeader>
             <TableRow>
-              {/* <th className="py-3 px-6 text-left">Ordine ID</th> */}
               <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-left min-w-[100px]">
                 Cliente
               </TableHead>
-              {/* <th className="py-3 px-6 text-left">Email</th> */}
               <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-left">
                 Ordine
               </TableHead>
@@ -121,17 +97,11 @@ const OrderListPage = () => {
               <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-left">
                 Stato
               </TableHead>
-              {isAdmin && (
-                <TableHead className="p-1 text-xs md:text-base md:py-3 md:px-6 text-center">
-                  Cambia stato
-                </TableHead>
-              )}
             </TableRow>
           </TableHeader>
           <TableBody>
             {orders.map((order) => (
               <TableRow key={order.orderId}>
-                {/* <td className="py-4 px-6">{order.orderId}</td> */}
                 <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6 break-all">
                   <span>
                     <b>Nome: </b>
@@ -149,17 +119,13 @@ const OrderListPage = () => {
                   </span>
                 </TableCell>
 
-                {/* <td className="py-4 px-6">{order.userEmail}</td> */}
                 <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6">
-                  {/* Map through the products array to display the product names */}
                   {order.products.map((product) => (
-                    <span className="text-nowrap border border-slate-200/50 p-1 " key={product.id}>
+                    <span className="text-nowrap border border-slate-200/50 p-1" key={product.id}>
                       {product.quantity}x {product.name} <br />
-                      {/* Optionally add a comma if there are multiple products */}
                     </span>
                   ))}
                   <br />
-                  {/* Display the order price */}
                   {"TOTALE: "}€{Number(order.price).toFixed(2)}
                 </TableCell>
                 {isAdmin && (
@@ -170,27 +136,6 @@ const OrderListPage = () => {
                 <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6">
                   {order.status}
                 </TableCell>
-                {isAdmin &&
-                  order.status !== "Atesa pagamento" &&
-                  order.status !== "Completato" && (
-                    <TableCell className="p-1 text-xs md:text-base md:py-3 md:px-6 text-center">
-                      <select
-                        value={order.status}
-                        onChange={(e) =>
-                          handleStatusChange(order.orderId, e.target.value)
-                        }
-                        className="bg-gray-200 p-2 rounded-lg"
-                      >
-                        <option value="">Cambia stato</option>
-                        <option value="Ricevuto">ricevuto</option>
-                        <option value="In cucina!">in cucina</option>
-                        <option value="Preparato!">preparato</option>
-                        <option value="In consegna">in consegna</option>
-                        <option value="Consegnato">consegnato</option>
-                        <option value="Completato">completato</option>
-                      </select>
-                    </TableCell>
-                  )}
               </TableRow>
             ))}
           </TableBody>
@@ -200,4 +145,4 @@ const OrderListPage = () => {
   );
 };
 
-export default OrderListPage;
+export default ComplOrdersListPage;

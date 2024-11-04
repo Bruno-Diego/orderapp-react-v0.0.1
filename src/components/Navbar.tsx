@@ -58,7 +58,12 @@ const Navbar = () => {
             </Button>
             <Button variant="outline" className="mx-1">
               <Link className="text-red-500" href="/orders">
-                Ordine
+                Ordine Nuove
+              </Link>
+            </Button>
+            <Button variant="outline" className="mx-1">
+              <Link className="text-red-500" href="/completed-orders">
+                Ordine Completate
               </Link>
             </Button>
           </div>
@@ -96,7 +101,15 @@ const Navbar = () => {
                   <MenubarItem>
                     <Button variant="outline">
                       <Link className="text-red-500" href="/orders">
-                        ordine
+                        Ordine Nuove
+                      </Link>
+                    </Button>
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>
+                    <Button variant="outline">
+                      <Link className="text-red-500" href="/completed-orders">
+                        Ordine Completate
                       </Link>
                     </Button>
                   </MenubarItem>
