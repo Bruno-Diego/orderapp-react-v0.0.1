@@ -12,7 +12,7 @@ export const GET = async (req: NextRequest) => {
           },
         },
         orderBy: {
-          createdAt: 'desc', // Optional: Order by creation date
+          createdAt: 'asc', // Optional: Order by creation date
         },
       });
       return new NextResponse(JSON.stringify(orders), { status: 200 });
